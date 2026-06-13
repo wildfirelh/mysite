@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alex Chen · 个人主页</title>
+<title>wildfire · 个人主页</title>
 <style>
   :root {
     --bg: #0a0a0f;
@@ -25,7 +25,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── Grid background ── */
   body::before {
     content: '';
     position: fixed;
@@ -38,7 +37,6 @@
     z-index: 0;
   }
 
-  /* ── Navigation ── */
   nav {
     position: fixed; top:0; left:0; right:0; z-index:100;
     background: rgba(10,10,15,0.85);
@@ -54,14 +52,12 @@
   }
   nav a:hover { color: var(--accent-glow); }
 
-  /* ── Sections ── */
   section {
     position: relative; z-index:1;
     max-width: 800px; margin: 0 auto;
     padding: 5rem 1.5rem;
   }
 
-  /* ── Hero ── */
   .hero {
     min-height: 100vh; display:flex; flex-direction:column;
     justify-content: center; align-items: flex-start;
@@ -83,7 +79,7 @@
   .hero h1 span { color: var(--accent); }
   .hero p {
     color: var(--muted); font-size: 1.1rem;
-    max-width: 480px; margin-top: 1.2rem;
+    max-width: 520px; margin-top: 1.2rem;
   }
   .hero .links {
     display: flex; gap: 1rem; margin-top: 2rem;
@@ -103,7 +99,6 @@
   }
   .hero .links a.primary:hover { background: #5a4bd1; }
 
-  /* ── Section titles ── */
   h2 {
     font-size: 1.6rem; font-weight: 600;
     margin-bottom: 2rem; letter-spacing: -0.01em;
@@ -116,10 +111,8 @@
     background: var(--accent); border-radius: 2px;
   }
 
-  /* ── About ── */
   .about p { color: var(--muted); max-width: 600px; }
 
-  /* ── Skills ── */
   .skill-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 0.75rem;
@@ -134,7 +127,6 @@
   .skill-card h3 { font-size: 0.95rem; margin-bottom: 0.2rem; }
   .skill-card p { font-size: 0.8rem; color: var(--muted); }
 
-  /* ── Projects ── */
   .project-list { display: flex; flex-direction: column; gap: 1rem; }
   .project-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -155,7 +147,6 @@
   }
   .project-card p { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; }
 
-  /* ── Contact ── */
   .contact { text-align: center; }
   .contact p { color: var(--muted); margin-bottom: 1.5rem; }
   .contact .email {
@@ -169,14 +160,12 @@
     border-color: var(--accent); background: rgba(108,92,231,0.08);
   }
 
-  /* ── Footer ── */
   footer {
     text-align: center; padding: 2rem;
     color: var(--muted); font-size: 0.8rem;
     border-top: 1px solid var(--border);
   }
 
-  /* ── Responsive ── */
   @media (max-width: 600px) {
     nav { gap: 1rem; padding: 0.8rem; }
     nav a { font-size: 0.8rem; }
@@ -196,14 +185,14 @@
 </nav>
 
 <section class="hero" id="home">
-  <div class="tag">🚀 全栈开发者</div>
-  <h1>你好，我是<br><span>Alex Chen</span></h1>
+  <div class="tag">🎓 在读大学生</div>
+  <h1>你好，我是<br><span>wildfire</span></h1>
   <p>
-    热爱构建优雅、高性能的数字产品。
-    专注于前端工程与后端架构，追求代码与体验的极致。
+    武汉职业技术大学 · 光电信息工程技术专业 大一在读。
+    热爱摄影与数码，痴迷于 AI 技术带来的无限可能。
   </p>
   <div class="links">
-    <a class="primary" href="https://github.com" target="_blank">GitHub</a>
+    <a class="primary" href="https://github.com/wildfirelh" target="_blank">GitHub</a>
     <a href="#projects">查看项目 ↓</a>
   </div>
 </section>
@@ -211,89 +200,89 @@
 <section class="about" id="about">
   <h2>关于我</h2>
   <p>
-    5 年全栈开发经验，擅长 React / TypeScript / Node.js 技术栈。
-    热衷于开源社区，相信技术应该服务于人。
-    工作之余喜欢探索系统设计与交互体验的前沿趋势。
+    目前就读于武汉职业技术大学光电信息工程技术专业，对光学成像与智能算法交叉领域充满好奇。
+    课余时间沉迷摄影，喜欢用镜头捕捉光影瞬间；同时也是数码发烧友，
+    热爱折腾各种硬件与新工具。课余自学 AI 相关技术，探索大模型与计算机视觉的前沿应用。
   </p>
 </section>
 
 <section class="skills" id="skills">
-  <h2>技术栈</h2>
+  <h2>技能 & 兴趣</h2>
   <div class="skill-grid">
     <div class="skill-card">
-      <div class="icon">⚛️</div>
-      <h3>React / Vue</h3>
-      <p>前端框架 · SSR · 组件化</p>
+      <div class="icon">📷</div>
+      <h3>摄影</h3>
+      <p>风光 · 街拍 · 人像</p>
     </div>
     <div class="skill-card">
-      <div class="icon">🟦</div>
-      <h3>TypeScript</h3>
-      <p>类型安全 · 工程化</p>
+      <div class="icon">🤖</div>
+      <h3>AI 应用</h3>
+      <p>大模型 · 提示工程 · CV</p>
     </div>
     <div class="skill-card">
-      <div class="icon">🟢</div>
-      <h3>Node.js</h3>
-      <p>后端服务 · API 设计</p>
+      <div class="icon">💻</div>
+      <h3>编程入门</h3>
+      <p>Python · HTML/CSS</p>
     </div>
     <div class="skill-card">
-      <div class="icon">🐳</div>
-      <h3>Docker</h3>
-      <p>容器化 · CI/CD</p>
+      <div class="icon">🔬</div>
+      <h3>光电技术</h3>
+      <p>光学基础 · 传感 · 成像</p>
     </div>
     <div class="skill-card">
-      <div class="icon">🗄️</div>
-      <h3>PostgreSQL</h3>
-      <p>数据建模 · 性能优化</p>
+      <div class="icon">📱</div>
+      <h3>数码评测</h3>
+      <p>产品体验 · 硬件探索</p>
     </div>
     <div class="skill-card">
-      <div class="icon">☁️</div>
-      <h3>AWS / Cloud</h3>
-      <p>Serverless · 部署运维</p>
+      <div class="icon">🎨</div>
+      <h3>后期处理</h3>
+      <p>Lightroom · Photoshop</p>
     </div>
   </div>
 </section>
 
 <section class="projects" id="projects">
-  <h2>精选项目</h2>
+  <h2>项目 & 实践</h2>
   <div class="project-list">
     <div class="project-card">
       <div class="meta">
-        <h3>Nebula Dashboard</h3>
+        <h3>AI 图像创作实验</h3>
         <div class="tag-list">
-          <span>React</span><span>D3.js</span><span>WebSocket</span>
+          <span>Stable Diffusion</span><span>ComfyUI</span>
         </div>
       </div>
-      <p>实时数据可视化仪表盘，支持毫秒级流式数据渲染与交互式图表。</p>
+      <p>探索 AI 生图工作流，从文生图到 ControlNet 精准控制，记录实验过程与调参心得。</p>
     </div>
     <div class="project-card">
       <div class="meta">
-        <h3>SwiftAPI</h3>
+        <h3>个人摄影作品集</h3>
         <div class="tag-list">
-          <span>Node.js</span><span>GraphQL</span><span>Redis</span>
+          <span>Lightroom</span><span>作品整理</span>
         </div>
       </div>
-      <p>高性能 API 网关，集成缓存策略与限流机制，QPS 10k+。</p>
+      <p>持续积累街头与风光摄影作品，用镜头记录城市烟火与自然之美。</p>
     </div>
     <div class="project-card">
       <div class="meta">
-        <h3>PixelFlow</h3>
+        <h3>大模型学习笔记</h3>
         <div class="tag-list">
-          <span>Next.js</span><span>tRPC</span><span>Prisma</span>
+          <span>LLM</span><span>Prompt Engineering</span>
         </div>
       </div>
-      <p>全栈协作白板应用，支持多人实时绘图、版本回溯与导出。</p>
+      <p>整理大语言模型使用技巧、RAG 实践与 Agent 开发的学习笔记。</p>
     </div>
   </div>
 </section>
 
 <section class="contact" id="contact">
   <h2>联系我</h2>
-  <p>有合作想法？欢迎随时来信。</p>
-  <a class="email" href="mailto:alex@example.com">alex@example.com</a>
+  <p>对摄影、AI 或数码有共同兴趣？欢迎来信交流。</p>
+  <a class="email" href="mailto:LH2878368528@163.com">LH2878368528@163.com</a>
 </section>
 
 <footer>
-  &copy; 2026 Alex Chen · 简洁即美
+  &copy; 2026 wildfire · 保持好奇，保持热爱
 </footer>
 
 </body>
