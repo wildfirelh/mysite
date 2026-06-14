@@ -6,23 +6,26 @@
 <title>wildfire · 个人主页</title>
 <style>
   :root {
-    --bg: #060609;
-    --surface: #0c0c14;
-    --elevated: #11111c;
-    --border: rgba(255,255,255,0.06);
-    --border-hover: rgba(255,255,255,0.12);
-    --text: #eaeaf0;
-    --ink: #c4c4d0;
-    --muted: #6e6e80;
-    --accent: #7c5cfc;
-    --accent-soft: rgba(124,92,252,0.12);
-    --amber: #f0a040;
-    --amber-soft: rgba(240,160,64,0.12);
-    --radius-sm: 10px;
-    --radius: 18px;
-    --radius-lg: 24px;
-    --ease-out: cubic-bezier(0.16,1,0.3,1);
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --elevated: #f0f2f5;
+    --border: #e5e7ec;
+    --border-hover: #d0d4dd;
+    --text: #18181b;
+    --ink: #3f3f50;
+    --muted: #8b8fa3;
+    --accent: #0ea5a0;
+    --accent-soft: rgba(14,165,160,0.08);
+    --accent-glow: #5eead4;
+    --warm: #f59e4b;
+    --warm-soft: rgba(245,158,75,0.08);
+    --radius: 16px;
+    --radius-lg: 22px;
+    --ease: cubic-bezier(0.22,1,0.36,1);
     --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 16px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -32,28 +35,33 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  /* ── Starfield ── */
-  #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  /* ── Dot pattern bg ── */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(#d0d5e0 0.8px, transparent 0.8px);
+    background-size: 32px 32px;
+    opacity: 0.35;
+  }
 
   /* ── Mouse glow ── */
   .glow {
     position: fixed; pointer-events: none; z-index: 9999;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(124,92,252,0.05) 0%, transparent 60%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(14,165,160,0.07) 0%, transparent 60%);
     border-radius: 50%; transform: translate(-50%, -50%);
   }
 
   /* ── Nav ── */
   nav {
     position: fixed; top:0; left:0; right:0; z-index:100;
-    background: rgba(6,6,9,0.5);
-    backdrop-filter: saturate(180%) blur(24px);
-    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    background: rgba(245,247,250,0.7);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid var(--border);
     display: flex; justify-content: center; gap: 2.5rem;
     padding: 0.85rem;
@@ -62,26 +70,25 @@
     color: var(--muted); text-decoration: none;
     font-size: 0.82rem; font-weight: 500;
     letter-spacing: 0.02em;
-    transition: color 0.3s;
+    transition: color 0.25s;
   }
-  nav a:hover { color: var(--text); }
+  nav a:hover { color: var(--accent); }
 
-  /* ── Sections ── */
   section {
     position: relative; z-index:1;
-    max-width: 920px; margin: 0 auto;
+    max-width: 960px; margin: 0 auto;
     padding: 7rem 2rem;
   }
 
-  /* ── Reveal animations ── */
+  /* ── Reveal ── */
   .reveal {
     opacity: 0;
-    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   }
-  .reveal-up { transform: translateY(40px); }
-  .reveal-left { transform: translateX(-30px); }
-  .reveal-right { transform: translateX(30px); }
-  .reveal-scale { transform: scale(0.95); }
+  .rev-up { transform: translateY(36px); }
+  .rev-left { transform: translateX(-28px); }
+  .rev-right { transform: translateX(28px); }
+  .rev-scale { transform: scale(0.94); }
   .reveal.visible { opacity: 1; transform: none; }
 
   /* ── Hero ── */
@@ -89,175 +96,228 @@
     min-height: 100vh; display:flex; flex-direction:column;
     justify-content: center; padding-top: 0;
   }
-  .hero .label {
+  .hero .pill {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: var(--surface); border: 1px solid var(--border);
     border-radius: 50px; padding: 0.3rem 1rem 0.3rem 0.6rem;
-    font-size: 0.78rem; color: var(--muted);
-    margin-bottom: 2.5rem; letter-spacing: 0.03em;
-    background: rgba(255,255,255,0.02);
+    font-size: 0.8rem; color: var(--muted);
+    margin-bottom: 2.5rem; box-shadow: var(--shadow-sm);
   }
-  .hero .label .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--amber);
-    box-shadow: 0 0 8px var(--amber);
+  .hero .pill .live {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(14,165,160,0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(14,165,160,0); }
   }
   .hero h1 {
-    font-size: clamp(3.2rem, 7vw, 5.5rem);
-    font-weight: 600; letter-spacing: -0.04em;
-    line-height: 1.02; margin-bottom: 0.15em;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 700; letter-spacing: -0.04em;
+    line-height: 1.04;
   }
-  .hero h1 .gradient {
-    background: linear-gradient(135deg, var(--accent) 20%, #c084fc 55%, var(--amber) 90%);
+  .hero h1 .grad {
+    background: linear-gradient(135deg, #0ea5a0 20%, #06b6d4 50%, #f59e4b 90%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .hero .sub {
-    color: var(--muted); font-size: 1.1rem;
-    max-width: 520px; margin-top: 1.5rem;
+    color: var(--ink); font-size: 1.12rem;
+    max-width: 500px; margin-top: 1.4rem;
     line-height: 1.75;
   }
   .hero .cta-row {
-    display: flex; gap: 1rem; margin-top: 2.5rem;
+    display: flex; gap: 0.85rem; margin-top: 2.4rem;
   }
   .hero .cta-row a {
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 50px; padding: 0.7rem 1.8rem;
+    border: 1px solid var(--border);
+    border-radius: 50px; padding: 0.72rem 1.8rem;
     color: var(--text); text-decoration: none;
-    font-size: 0.9rem; font-weight: 500;
-    transition: all 0.3s var(--ease-out);
+    font-size: 0.9rem; font-weight: 500; background: var(--surface);
+    transition: all 0.3s var(--ease); box-shadow: var(--shadow-sm);
   }
   .hero .cta-row a:hover {
-    border-color: rgba(124,92,252,0.4);
-    background: var(--accent-soft);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
     transform: translateY(-2px);
   }
   .hero .cta-row a.primary {
-    background: var(--accent); border-color: var(--accent);
+    background: var(--accent); border-color: var(--accent); color: #fff;
   }
   .hero .cta-row a.primary:hover {
-    background: #6b4aee;
-    box-shadow: 0 12px 40px rgba(124,92,252,0.25);
+    background: #0b8c88;
+    box-shadow: 0 10px 32px rgba(14,165,160,0.28);
   }
 
   /* ── Section heading ── */
   .sec-head {
-    display: flex; align-items: baseline; gap: 1rem;
-    margin-bottom: 3rem;
+    display: flex; align-items: baseline; gap: 0.75rem;
+    margin-bottom: 2.8rem;
   }
   .sec-head .num {
-    font-size: 0.75rem; color: var(--amber); font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.04em;
+    font-size: 0.72rem; color: var(--accent); font-weight: 700;
+    letter-spacing: 0.05em;
   }
   .sec-head h2 {
-    font-size: 2rem; font-weight: 600;
+    font-size: 2rem; font-weight: 700;
     letter-spacing: -0.02em;
   }
 
   /* ── About ── */
   .about-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
-    align-items: start;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;
   }
   .about p {
     color: var(--ink); font-size: 1rem; line-height: 1.85;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.8rem;
+    box-shadow: var(--shadow-sm);
   }
-  .about p em { font-style: normal; color: var(--text); }
-  .about .highlights {
-    display: flex; flex-direction: column; gap: 0.75rem;
-  }
-  .highlight-row {
+  .about p em { font-style: normal; font-weight: 600; color: var(--accent); }
+  .about .stats {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
   }
-  .hl-card {
+  .stat-card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 1.3rem 1.2rem;
-    transition: border-color 0.3s, background 0.3s;
+    text-align: center; box-shadow: var(--shadow-sm);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s;
+    cursor: default;
   }
-  .hl-card:hover { border-color: var(--border-hover); background: var(--elevated); }
-  .hl-card .big {
-    font-size: 1.5rem; font-weight: 700;
-    background: linear-gradient(135deg, var(--accent), #c084fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
   }
-  .hl-card .small { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+  .stat-card .big {
+    font-size: 1.6rem; font-weight: 700; color: var(--accent);
+  }
+  .stat-card .small {
+    font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem;
+  }
 
   /* ── Skills ── */
-  .skills-layout { display: flex; flex-direction: column; gap: 0.85rem; }
-  .skill-row {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.85rem;
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;
   }
-  .skill-row.alt { grid-template-columns: 2fr 1fr; }
-  .skill-item {
+  .skill-tile {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 1.5rem 1.4rem;
-    display: flex; gap: 1rem; align-items: flex-start;
-    transition: all 0.35s var(--ease-out);
+    display: flex; gap: 0.85rem; align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.35s var(--ease);
     position: relative; overflow: hidden;
   }
-  .skill-item::after {
+  .skill-tile::before {
     content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at top right, rgba(124,92,252,0.06), transparent 70%);
+    background: radial-gradient(ellipse at top right, rgba(14,165,160,0.05), transparent 60%);
     opacity: 0; transition: opacity 0.35s;
   }
-  .skill-item:hover { border-color: rgba(124,92,252,0.25); }
-  .skill-item:hover::after { opacity: 1; }
-  .skill-item .si-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
-  .skill-item h3 { font-size: 0.95rem; margin-bottom: 0.2rem; }
-  .skill-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+  .skill-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(14,165,160,0.3);
+  }
+  .skill-tile:hover::before { opacity: 1; }
+  .skill-tile.featured {
+    border-color: rgba(14,165,160,0.2);
+    background: linear-gradient(135deg, #f0fdfa, #fff);
+  }
+  .skill-tile .icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+  .skill-tile h3 { font-size: 0.92rem; margin-bottom: 0.2rem; }
+  .skill-tile p { font-size: 0.76rem; color: var(--muted); line-height: 1.45; }
 
   /* ── Projects ── */
-  .project-list { display: flex; flex-direction: column; gap: 1rem; }
+  .proj-list { display: flex; flex-direction: column; gap: 1rem; }
   .proj-card {
-    display: grid; grid-template-columns: 1fr 1fr;
+    display: grid; grid-template-columns: 1fr 1.2fr;
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius-lg); overflow: hidden;
-    transition: border-color 0.3s;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
   }
-  .proj-card:hover { border-color: rgba(124,92,252,0.2); }
-  .proj-card .proj-img {
-    aspect-ratio: 16/10; background: linear-gradient(135deg, #12122a 0%, #1a1028 50%, #0f1a24 100%);
+  .proj-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(14,165,160,0.25);
+  }
+  .proj-card .img-area {
+    aspect-ratio: 16/10;
     display: flex; align-items: center; justify-content: center;
-    font-size: 3rem; position: relative; overflow: hidden;
+    font-size: 3.2rem;
+    position: relative; overflow: hidden;
   }
-  .proj-card .proj-img::before {
+  .proj-card:nth-child(1) .img-area { background: linear-gradient(135deg, #ecfeff, #f0fdfa); }
+  .proj-card:nth-child(2) .img-area { background: linear-gradient(135deg, #fef3c7, #fffbeb); }
+  .proj-card:nth-child(3) .img-area { background: linear-gradient(135deg, #ede9fe, #faf5ff); }
+  .proj-card .img-area::after {
     content: ''; position: absolute; inset: 0;
-    background: radial-gradient(circle at 30% 40%, rgba(124,92,252,0.1) 0%, transparent 60%);
+    background: radial-gradient(circle at 40% 40%, rgba(14,165,160,0.08), transparent 55%);
   }
-  .proj-card .proj-info {
-    padding: 2rem; display: flex; flex-direction: column; justify-content: center;
+  .proj-card .info {
+    padding: 1.8rem; display: flex; flex-direction: column; justify-content: center;
   }
-  .proj-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
-  .proj-card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .proj-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .proj-card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
   .proj-card .tags span {
-    font-size: 0.68rem; background: rgba(124,92,252,0.1);
-    color: #b4a0ff; padding: 0.15rem 0.6rem;
+    font-size: 0.68rem; background: rgba(14,165,160,0.08);
+    color: #0d9488; padding: 0.15rem 0.6rem;
     border-radius: 50px; font-weight: 500;
   }
-  .proj-card p { font-size: 0.85rem; color: var(--ink); line-height: 1.7; }
+  .proj-card p { font-size: 0.85rem; color: var(--ink); line-height: 1.65; }
+
+  /* ── Nav Links ── */
+  .nav-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+  }
+  .nav-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.2rem 1.2rem;
+    text-decoration: none; color: var(--text);
+    display: flex; align-items: center; gap: 0.85rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s var(--ease);
+    position: relative; overflow: hidden;
+  }
+  .nav-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(14,165,160,0.3);
+  }
+  .nav-item .ni-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+    font-weight: 600;
+  }
+  .nav-item .ni-info { min-width: 0; }
+  .nav-item .ni-title {
+    font-size: 0.88rem; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nav-item .ni-desc {
+    font-size: 0.72rem; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
 
   /* ── Contact ── */
-  .contact-wrap {
-    display: flex; flex-direction: column; align-items: center;
-    text-align: center;
+  .contact-area {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
   }
-  .contact-wrap > p { color: var(--ink); margin-bottom: 2rem; max-width: 420px; }
-  .contact-link {
+  .contact-area > p { color: var(--ink); margin-bottom: 2rem; max-width: 440px; }
+  .contact-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 50px;
-    padding: 0.85rem 2.5rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 50px; padding: 0.85rem 2.4rem;
     color: var(--text); text-decoration: none;
-    font-weight: 500; font-size: 0.95rem;
-    transition: all 0.3s var(--ease-out);
-    background: var(--accent-soft);
+    font-weight: 600; font-size: 0.95rem;
+    transition: all 0.3s var(--ease); box-shadow: var(--shadow-sm);
   }
-  .contact-link:hover {
-    border-color: var(--accent);
-    background: rgba(124,92,252,0.18);
-    box-shadow: 0 10px 35px rgba(124,92,252,0.15);
+  .contact-btn:hover {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
   }
 
@@ -273,21 +333,19 @@
     nav { gap: 1.2rem; }
     section { padding: 5rem 1.2rem; }
     .hero { min-height: 80vh; }
-    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .skill-row { grid-template-columns: 1fr 1fr; }
-    .skill-row.alt { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
     .proj-card { grid-template-columns: 1fr; }
-    .proj-card .proj-img { aspect-ratio: 2/1; }
+    .nav-grid { grid-template-columns: 1fr 1fr; }
     .glow { display: none; }
   }
   @media (max-width: 480px) {
-    .skill-row, .highlight-row { grid-template-columns: 1fr; }
+    .skills-grid, .nav-grid, .stats { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<canvas id="starfield"></canvas>
 <div class="glow" id="glow"></div>
 
 <nav>
@@ -295,172 +353,191 @@
   <a href="#about">About</a>
   <a href="#skills">Skills</a>
   <a href="#projects">Projects</a>
+  <a href="#navs">Navs</a>
   <a href="#contact">Contact</a>
 </nav>
 
-<!-- ── Hero ── -->
+<!-- ═══ Hero ═══ -->
 <section class="hero" id="home">
-  <div class="label reveal reveal-up">
-    <span class="dot"></span> 武汉 · 在读大学生
+  <div class="pill reveal rev-up">
+    <span class="live"></span> 武汉 · 在读大学生
   </div>
-  <h1 class="reveal reveal-up" style="transition-delay:0.1s">
-    wildfire<span class="gradient">.</span>
+  <h1 class="reveal rev-up" style="transition-delay:0.08s">
+    wildfire<span class="grad">.</span>
   </h1>
-  <p class="sub reveal reveal-up" style="transition-delay:0.2s">
+  <p class="sub reveal rev-up" style="transition-delay:0.16s">
     武汉职业技术大学 · 光电信息工程技术专业<br>
     摄影与光学的交汇处，数码与 AI 的探索者。
   </p>
-  <div class="cta-row reveal reveal-up" style="transition-delay:0.3s">
+  <div class="cta-row reveal rev-up" style="transition-delay:0.24s">
     <a class="primary" href="https://github.com/wildfirelh" target="_blank">GitHub</a>
     <a href="#about">了解更多</a>
   </div>
 </section>
 
-<!-- ── About ── -->
+<!-- ═══ About ═══ -->
 <section id="about">
-  <div class="sec-head reveal reveal-left">
-    <span class="num">01</span>
-    <h2>关于我</h2>
+  <div class="sec-head reveal rev-left">
+    <span class="num">01</span><h2>关于我</h2>
   </div>
   <div class="about-grid">
-    <p class="reveal reveal-up">
-      就读于<em>武汉职业技术大学光电信息工程技术专业</em>，
+    <p class="reveal rev-up">
+      就读于<em>武汉职业技术大学光电信息工程技术专业</em>，2025 年入学。
       对光学成像与智能算法交叉领域充满好奇。
       课余沉迷摄影，用镜头捕捉光影；
       同时是数码发烧友，热爱折腾硬件与新工具。
       自学 AI，探索大模型与计算机视觉的前沿应用。
     </p>
-    <div class="highlights">
-      <div class="highlight-row reveal reveal-right">
-        <div class="hl-card"><div class="big">2024</div><div class="small">入学年份</div></div>
-        <div class="hl-card"><div class="big">WH</div><div class="small">所在城市</div></div>
-      </div>
-      <div class="highlight-row reveal reveal-right" style="transition-delay:0.1s">
-        <div class="hl-card"><div class="big">📷</div><div class="small">摄影热爱</div></div>
-        <div class="hl-card"><div class="big">AI</div><div class="small">主攻方向</div></div>
-      </div>
+    <div class="stats">
+      <div class="stat-card reveal rev-right"><div class="big" data-count="2025">2025</div><div class="small">入学年份</div></div>
+      <div class="stat-card reveal rev-right" style="transition-delay:0.06s"><div class="big">WH</div><div class="small">所在城市</div></div>
+      <div class="stat-card reveal rev-right" style="transition-delay:0.12s"><div class="big">📷</div><div class="small">摄影热爱</div></div>
+      <div class="stat-card reveal rev-right" style="transition-delay:0.18s"><div class="big">AI</div><div class="small">主攻方向</div></div>
     </div>
   </div>
 </section>
 
-<!-- ── Skills ── -->
+<!-- ═══ Skills ═══ -->
 <section id="skills">
-  <div class="sec-head reveal reveal-left">
-    <span class="num">02</span>
-    <h2>技能 & 兴趣</h2>
+  <div class="sec-head reveal rev-left">
+    <span class="num">02</span><h2>技能 & 兴趣</h2>
   </div>
-  <div class="skills-layout">
-    <div class="skill-row reveal reveal-up">
-      <div class="skill-item">
-        <span class="si-icon">📷</span>
-        <div><h3>摄影</h3><p>风光 · 街拍 · 人像</p></div>
-      </div>
-      <div class="skill-item">
-        <span class="si-icon">🤖</span>
-        <div><h3>AI 应用</h3><p>大模型 · 提示工程 · CV</p></div>
-      </div>
-      <div class="skill-item">
-        <span class="si-icon">💻</span>
-        <div><h3>编程入门</h3><p>Python · HTML/CSS</p></div>
-      </div>
+  <div class="skills-grid">
+    <div class="skill-tile reveal rev-up">
+      <span class="icon">📷</span>
+      <div><h3>摄影</h3><p>风光 · 街拍 · 人像</p></div>
     </div>
-    <div class="skill-row alt reveal reveal-up" style="transition-delay:0.1s">
-      <div class="skill-item">
-        <span class="si-icon">🔬</span>
-        <div><h3>光电技术</h3><p>光学基础 · 传感器原理 · 成像系统</p></div>
-      </div>
-      <div class="skill-item" style="background:linear-gradient(135deg, rgba(124,92,252,0.08), rgba(240,160,64,0.06));border-color:rgba(124,92,252,0.12);">
-        <span class="si-icon">✨</span>
-        <div><h3>数码 & 后期</h3><p>产品评测 · Lightroom · Photoshop</p></div>
-      </div>
+    <div class="skill-tile featured reveal rev-up" style="transition-delay:0.06s">
+      <span class="icon">🤖</span>
+      <div><h3>AI 应用</h3><p>大模型 · 提示工程 · CV</p></div>
+    </div>
+    <div class="skill-tile reveal rev-up" style="transition-delay:0.12s">
+      <span class="icon">💻</span>
+      <div><h3>编程入门</h3><p>Python · HTML/CSS</p></div>
+    </div>
+    <div class="skill-tile reveal rev-up" style="transition-delay:0.16s">
+      <span class="icon">🔬</span>
+      <div><h3>光电技术</h3><p>光学基础 · 传感 · 成像</p></div>
+    </div>
+    <div class="skill-tile reveal rev-up" style="transition-delay:0.2s">
+      <span class="icon">📱</span>
+      <div><h3>数码评测</h3><p>产品体验 · 硬件探索</p></div>
+    </div>
+    <div class="skill-tile featured reveal rev-up" style="transition-delay:0.24s">
+      <span class="icon">🎨</span>
+      <div><h3>后期处理</h3><p>Lightroom · Photoshop</p></div>
     </div>
   </div>
 </section>
 
-<!-- ── Projects ── -->
+<!-- ═══ Projects ═══ -->
 <section id="projects">
-  <div class="sec-head reveal reveal-left">
-    <span class="num">03</span>
-    <h2>项目 & 实践</h2>
+  <div class="sec-head reveal rev-left">
+    <span class="num">03</span><h2>项目 & 实践</h2>
   </div>
-  <div class="project-list">
-    <div class="proj-card reveal reveal-up">
-      <div class="proj-img">🎨</div>
-      <div class="proj-info">
+  <div class="proj-list">
+    <div class="proj-card reveal rev-up">
+      <div class="img-area">🎨</div>
+      <div class="info">
         <h3>AI 图像创作实验</h3>
         <div class="tags"><span>Stable Diffusion</span><span>ComfyUI</span></div>
-        <p>探索 AI 生图工作流，从文生图到 ControlNet 精准控制，记录实验与调参心得。</p>
+        <p>探索 AI 生图工作流，文生图到 ControlNet 精准控制。</p>
       </div>
     </div>
-    <div class="proj-card reveal reveal-up" style="transition-delay:0.1s">
-      <div class="proj-img">📸</div>
-      <div class="proj-info">
+    <div class="proj-card reveal rev-up" style="transition-delay:0.1s">
+      <div class="img-area">📸</div>
+      <div class="info">
         <h3>个人摄影作品集</h3>
         <div class="tags"><span>Lightroom</span><span>作品整理</span></div>
-        <p>持续积累街头与风光摄影作品，用镜头记录城市烟火与自然之美。</p>
+        <p>持续积累街头与风光摄影，用镜头记录城市烟火。</p>
       </div>
     </div>
-    <div class="proj-card reveal reveal-up" style="transition-delay:0.2s">
-      <div class="proj-img">🧠</div>
-      <div class="proj-info">
+    <div class="proj-card reveal rev-up" style="transition-delay:0.2s">
+      <div class="img-area">🧠</div>
+      <div class="info">
         <h3>大模型学习笔记</h3>
         <div class="tags"><span>LLM</span><span>Prompt Engineering</span></div>
-        <p>整理大语言模型使用技巧、RAG 实践与 Agent 开发的学习笔记。</p>
+        <p>大语言模型使用技巧、RAG 实践与 Agent 开发笔记。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Contact ── -->
-<section id="contact">
-  <div class="sec-head reveal reveal-left">
-    <span class="num">04</span>
-    <h2>联系我</h2>
+<!-- ═══ Useful Navs ═══ -->
+<section id="navs">
+  <div class="sec-head reveal rev-left">
+    <span class="num">04</span><h2>实用导航</h2>
   </div>
-  <div class="contact-wrap reveal reveal-up">
-    <p>对摄影、AI 或数码有共同兴趣？欢迎来信交流想法与合作。</p>
-    <a class="contact-link" href="mailto:LH2878368528@163.com">
+  <div class="nav-grid">
+    <a class="nav-item reveal rev-up" href="https://github.com/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#f0f5ff;color:#2563eb;">GH</span>
+      <span class="ni-info"><span class="ni-title">GitHub</span><span class="ni-desc">全球最大代码托管平台</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.04s" href="https://www.runoob.com/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#fef3c7;color:#d97706;">RB</span>
+      <span class="ni-info"><span class="ni-title">菜鸟教程</span><span class="ni-desc">编程入门学习网站</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.08s" href="https://sspai.com/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#fce7f3;color:#db2777;">SS</span>
+      <span class="ni-info"><span class="ni-title">少数派</span><span class="ni-desc">数字生活与效率指南</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.1s" href="https://axutongxue.xyz/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#f0fdf4;color:#16a34a;">AX</span>
+      <span class="ni-info"><span class="ni-title">阿虚同学</span><span class="ni-desc">实用工具 & 资源分享</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.14s" href="https://www.423down.com/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#ede9fe;color:#7c3aed;">42</span>
+      <span class="ni-info"><span class="ni-title">423Down</span><span class="ni-desc">绿色软件下载站</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.18s" href="https://nav.imyaigc.com/mobile" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#ecfdf5;color:#059669;">AI</span>
+      <span class="ni-info"><span class="ni-title">AI工具箱</span><span class="ni-desc">AI 工具聚合导航</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.2s" href="https://greasyfork.wwwnav.com/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#fff7ed;color:#ea580c;">GF</span>
+      <span class="ni-info"><span class="ni-title">Greasy Fork</span><span class="ni-desc">用户脚本 & 浏览器扩展</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.24s" href="https://talent.shixizhi.huawei.com/portal/1365189427395223554?pageId=1608380789321072641&activeIndex=-1&sxz-lang=zh_CN" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#fee2e2;color:#dc2626;">HW</span>
+      <span class="ni-info"><span class="ni-title">华为实习</span><span class="ni-desc">实习生招聘平台</span></span>
+    </a>
+    <a class="nav-item reveal rev-up" style="transition-delay:0.28s" href="https://dnkh.mwks77.cn/" target="_blank" rel="noopener">
+      <span class="ni-icon" style="background:#e0f2fe;color:#0284c7;">DK</span>
+      <span class="ni-info"><span class="ni-title">电脑酷航</span><span class="ni-desc">数码 & 效率工具导航</span></span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ Contact ═══ -->
+<section id="contact">
+  <div class="sec-head reveal rev-left">
+    <span class="num">05</span><h2>联系我</h2>
+  </div>
+  <div class="contact-area reveal rev-scale">
+    <p>对摄影、AI 或数码有共同兴趣？欢迎来信交流。</p>
+    <a class="contact-btn" href="mailto:LH2878368528@163.com">
       ✉️ LH2878368528@163.com
     </a>
   </div>
 </section>
 
-<footer>&copy; 2026 wildfire · 保持好奇，保持热爱</footer>
+<footer>&copy; 2025 wildfire · 保持好奇，保持热爱</footer>
 
 <script>
-// ── Starfield ──
-(function(){
-  const c=document.getElementById('starfield'),ctx=c.getContext('2d');
-  let stars=[],w,h;
-  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}
-  function init(){
-    stars=[];const n=~~(w*h/3200);
-    for(let i=0;i<n;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.1+0.3,a:Math.random(),s:Math.random()*0.006+0.002,da:Math.random()*0.018+0.004});
-  }
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    for(let s of stars){s.a+=s.da;if(s.a>1||s.a<0.12)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.a*0.55})`;ctx.fill();}
-  }
-  function loop(){
-    draw();for(let s of stars){s.y-=s.s;if(s.y<-5){s.y=h+5;s.x=Math.random()*w;}}requestAnimationFrame(loop);
-  }
-  resize();init();loop();addEventListener('resize',()=>{resize();init();});
-})();
-
 // ── Mouse glow ──
 (function(){
   const g=document.getElementById('glow');let mx=-500,my=-500,ox=-500,oy=-500;
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   addEventListener('mouseleave',()=>{mx=-500;my=-500;});
-  function tick(){ox+=(mx-ox)*0.07;oy+=(my-oy)*0.07;g.style.left=ox+'px';g.style.top=oy+'px';g.style.opacity=mx<0?'0':'1';requestAnimationFrame(tick);}
+  function tick(){ox+=(mx-ox)*0.06;oy+=(my-oy)*0.06;g.style.left=ox+'px';g.style.top=oy+'px';g.style.opacity=mx<0?'0':'1';requestAnimationFrame(tick);}
   tick();
 })();
 
 // ── Scroll reveal ──
 (function(){
-  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.08,rootMargin:'0px 0px -20px 0px'});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-  setTimeout(()=>{document.querySelectorAll('.hero .reveal').forEach(el=>el.classList.add('visible'));},80);
+  setTimeout(()=>{document.querySelectorAll('.hero .reveal').forEach(el=>el.classList.add('visible'));},60);
 })();
 
 // ── Hero parallax ──
@@ -469,20 +546,27 @@
   addEventListener('scroll',()=>{
     if(!t){requestAnimationFrame(()=>{
       const s=scrollY,h=document.querySelector('.hero');
-      if(h){h.style.transform=`translateY(${s*0.12}px)`;h.style.opacity=Math.max(0,1-s/800);}
+      if(h){h.style.transform=`translateY(${s*0.08}px)`;}
       t=false;
     });t=true;}
   });
 })();
 
-// ── 3D tilt for highlight cards ──
+// ── Stat card click bounce ──
 (function(){
-  document.querySelectorAll('.hl-card').forEach(card=>{
-    card.addEventListener('mousemove',e=>{
-      const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,cx=r.width/2,cy=r.height/2;
-      card.style.transform=`perspective(600px) rotateX(${((y-cy)/cy)*6}deg) rotateY(${((x-cx)/cx)*-6}deg)`;
-    });
-    card.addEventListener('mouseleave',()=>{card.style.transform='';});
+  document.querySelectorAll('.stat-card').forEach(c=>{
+    c.addEventListener('click',function(){this.style.transform='scale(0.94)';setTimeout(()=>{this.style.transform='';},200);});
+  });
+})();
+
+// ── Animated section numbers ──
+(function(){
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){const n=e.target.querySelector('.num');if(n){n.style.transition='all 0.5s cubic-bezier(0.34,1.56,0.64,1)';n.style.transform='scale(1)';}}});
+  },{threshold:0.5});
+  document.querySelectorAll('.sec-head').forEach(el=>{
+    const n=el.querySelector('.num');if(n)n.style.transform='scale(0.5)';
+    obs.observe(el);
   });
 })();
 </script>
