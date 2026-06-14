@@ -6,175 +6,277 @@
 <title>wildfire · 个人主页</title>
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #12121a;
-    --border: #1e1e2e;
-    --text: #e0e0e8;
-    --muted: #6b6b80;
+    --bg: #000000;
+    --surface: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.06);
+    --text: #f5f5f7;
+    --muted: #86868b;
     --accent: #6c5ce7;
     --accent-glow: #a29bfe;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: default;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(108,92,231,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(108,92,231,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
+  /* ── Canvas Starfield ── */
+  #starfield {
+    position: fixed; inset: 0; z-index: 0;
     pointer-events: none;
-    z-index: 0;
   }
 
+  /* ── Mouse Spotlight ── */
+  .spotlight {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(108,92,231,0.06) 0%, transparent 60%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+  }
+
+  /* ── Navigation ── */
   nav {
     position: fixed; top:0; left:0; right:0; z-index:100;
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(12px);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid var(--border);
-    display: flex; justify-content: center; gap: 2rem;
-    padding: 1rem;
+    display: flex; justify-content: center; gap: 2.5rem;
+    padding: 0.9rem;
   }
   nav a {
     color: var(--muted); text-decoration: none;
-    font-size: 0.9rem; font-weight: 500;
-    transition: color 0.2s;
+    font-size: 0.85rem; font-weight: 500;
+    transition: color 0.3s; letter-spacing: 0.02em;
   }
-  nav a:hover { color: var(--accent-glow); }
+  nav a:hover { color: var(--text); }
 
+  /* ── Sections ── */
   section {
     position: relative; z-index:1;
-    max-width: 800px; margin: 0 auto;
-    padding: 5rem 1.5rem;
+    max-width: 880px; margin: 0 auto;
+    padding: 6rem 2rem;
   }
 
+  /* ── Scroll fade-in ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Hero ── */
   .hero {
     min-height: 100vh; display:flex; flex-direction:column;
     justify-content: center; align-items: flex-start;
+    padding-top: 0;
   }
   .hero .tag {
     display: inline-block;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255,255,255,0.12);
     border-radius: 50px;
-    padding: 0.3rem 1rem;
-    font-size: 0.8rem; color: var(--accent-glow);
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.05em;
+    padding: 0.35rem 1.2rem;
+    font-size: 0.8rem; color: var(--muted);
+    margin-bottom: 2rem;
+    letter-spacing: 0.06em;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.02);
   }
   .hero h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700; letter-spacing: -0.02em;
-    line-height: 1.1;
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 600; letter-spacing: -0.03em;
+    line-height: 1.05;
   }
-  .hero h1 span { color: var(--accent); }
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .hero p {
-    color: var(--muted); font-size: 1.1rem;
-    max-width: 520px; margin-top: 1.2rem;
+    color: var(--muted); font-size: 1.15rem;
+    max-width: 520px; margin-top: 1.5rem;
+    line-height: 1.7;
   }
   .hero .links {
-    display: flex; gap: 1rem; margin-top: 2rem;
+    display: flex; gap: 1rem; margin-top: 2.5rem;
   }
   .hero .links a {
-    border: 1px solid var(--border);
-    border-radius: 8px; padding: 0.6rem 1.4rem;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50px; padding: 0.7rem 1.8rem;
     color: var(--text); text-decoration: none;
-    font-size: 0.9rem; transition: all 0.2s;
+    font-size: 0.9rem; font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.25,1,0.5,1);
+    backdrop-filter: blur(10px);
   }
   .hero .links a:hover {
-    border-color: var(--accent);
-    background: rgba(108,92,231,0.08);
+    border-color: rgba(108,92,231,0.5);
+    background: rgba(108,92,231,0.1);
+    transform: translateY(-1px);
   }
   .hero .links a.primary {
-    background: var(--accent); border-color: var(--accent);
+    background: #6c5ce7; border-color: #6c5ce7;
   }
-  .hero .links a.primary:hover { background: #5a4bd1; }
+  .hero .links a.primary:hover {
+    background: #5a4bd1;
+    box-shadow: 0 8px 30px rgba(108,92,231,0.3);
+  }
 
+  /* ── Section titles ── */
   h2 {
-    font-size: 1.6rem; font-weight: 600;
-    margin-bottom: 2rem; letter-spacing: -0.01em;
+    font-size: 2rem; font-weight: 600;
+    margin-bottom: 3rem; letter-spacing: -0.02em;
     position: relative; display: inline-block;
   }
-  h2::after {
-    content: '';
-    position: absolute; bottom: -6px; left: 0;
-    width: 40px; height: 2px;
-    background: var(--accent); border-radius: 2px;
+  h2 .accent-dot {
+    color: var(--accent); margin-right: 0.4rem;
   }
 
-  .about p { color: var(--muted); max-width: 600px; }
+  /* ── About ── */
+  .about-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    align-items: start;
+  }
+  .about p { color: var(--muted); font-size: 1rem; line-height: 1.8; }
+  .about .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .stat-card .num {
+    font-size: 1.8rem; font-weight: 700;
+    background: linear-gradient(135deg, #a29bfe, #fd79a8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
 
+  /* ── Skills ── */
   .skill-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 0.75rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
   }
   .skill-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 1.2rem;
-    transition: border-color 0.2s;
+    perspective: 800px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
   }
-  .skill-card:hover { border-color: var(--accent); }
-  .skill-card .icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
-  .skill-card h3 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .skill-card-inner {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .skill-card:hover .skill-card-inner {
+    border-color: rgba(108,92,231,0.3);
+    box-shadow: 0 20px 50px rgba(108,92,231,0.08);
+  }
+  .skill-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .skill-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
   .skill-card p { font-size: 0.8rem; color: var(--muted); }
 
+  /* ── Projects ── */
   .project-list { display: flex; flex-direction: column; gap: 1rem; }
   .project-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.5rem;
-    transition: border-color 0.2s;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
   }
-  .project-card:hover { border-color: var(--accent); }
+  .project-card-inner {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .project-card-inner::before {
+    content: '';
+    position: absolute; top:0; left:0; right:0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(108,92,231,0.5), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover .project-card-inner::before { opacity: 1; }
+  .project-card:hover .project-card-inner {
+    border-color: rgba(108,92,231,0.25);
+    box-shadow: 0 20px 60px rgba(108,92,231,0.06);
+  }
   .project-card .meta {
     display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 0.5rem;
+    flex-wrap: wrap; gap: 0.75rem;
   }
-  .project-card h3 { font-size: 1.1rem; }
+  .project-card h3 { font-size: 1.15rem; font-weight: 600; }
   .project-card .tag-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .project-card .tag-list span {
-    font-size: 0.7rem; background: rgba(108,92,231,0.15);
-    color: var(--accent-glow); padding: 0.15rem 0.6rem;
-    border-radius: 50px;
+    font-size: 0.7rem; background: rgba(108,92,231,0.12);
+    color: var(--accent-glow); padding: 0.2rem 0.7rem;
+    border-radius: 50px; font-weight: 500;
   }
-  .project-card p { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; }
+  .project-card p { color: var(--muted); font-size: 0.9rem; margin-top: 0.75rem; line-height: 1.7; }
 
+  /* ── Contact ── */
   .contact { text-align: center; }
-  .contact p { color: var(--muted); margin-bottom: 1.5rem; }
+  .contact p { color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
   .contact .email {
     display: inline-block;
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 0.7rem 2rem;
-    color: var(--accent-glow); text-decoration: none;
-    font-weight: 500; transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 50px;
+    padding: 0.8rem 2.5rem;
+    color: var(--text); text-decoration: none;
+    font-weight: 500; font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.25,1,0.5,1);
+    backdrop-filter: blur(10px);
+    background: rgba(108,92,231,0.05);
   }
   .contact .email:hover {
-    border-color: var(--accent); background: rgba(108,92,231,0.08);
+    border-color: var(--accent);
+    background: rgba(108,92,231,0.12);
+    box-shadow: 0 8px 30px rgba(108,92,231,0.15);
+    transform: translateY(-2px);
   }
 
+  /* ── Footer ── */
   footer {
     text-align: center; padding: 2rem;
     color: var(--muted); font-size: 0.8rem;
     border-top: 1px solid var(--border);
+    position: relative; z-index: 1;
   }
 
-  @media (max-width: 600px) {
-    nav { gap: 1rem; padding: 0.8rem; }
-    nav a { font-size: 0.8rem; }
-    section { padding: 3rem 1rem; }
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    nav { gap: 1.2rem; padding: 0.8rem; }
+    nav a { font-size: 0.75rem; }
+    section { padding: 4rem 1.2rem; }
     .hero { min-height: 80vh; }
+    .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+    .about-wrap { grid-template-columns: 1fr; }
+    .skill-grid { grid-template-columns: repeat(2, 1fr); }
+    .spotlight { display: none; }
   }
 </style>
 </head>
 <body>
+
+<canvas id="starfield"></canvas>
+<div class="spotlight" id="spotlight"></div>
 
 <nav>
   <a href="#home">首页</a>
@@ -184,11 +286,11 @@
   <a href="#contact">联系</a>
 </nav>
 
-<section class="hero" id="home">
+<section class="hero fade-up" id="home">
   <div class="tag">🎓 在读大学生</div>
-  <h1>你好，我是<br><span>wildfire</span></h1>
+  <h1>你好，我是<br><span class="highlight">wildfire</span></h1>
   <p>
-    武汉职业技术大学 · 光电信息工程技术专业 大一在读。
+    武汉职业技术大学 · 光电信息工程技术专业<br>
     热爱摄影与数码，痴迷于 AI 技术带来的无限可能。
   </p>
   <div class="links">
@@ -197,86 +299,124 @@
   </div>
 </section>
 
-<section class="about" id="about">
-  <h2>关于我</h2>
-  <p>
-    目前就读于武汉职业技术大学光电信息工程技术专业，对光学成像与智能算法交叉领域充满好奇。
-    课余时间沉迷摄影，喜欢用镜头捕捉光影瞬间；同时也是数码发烧友，
-    热爱折腾各种硬件与新工具。课余自学 AI 相关技术，探索大模型与计算机视觉的前沿应用。
-  </p>
-</section>
-
-<section class="skills" id="skills">
-  <h2>技能 & 兴趣</h2>
-  <div class="skill-grid">
-    <div class="skill-card">
-      <div class="icon">📷</div>
-      <h3>摄影</h3>
-      <p>风光 · 街拍 · 人像</p>
-    </div>
-    <div class="skill-card">
-      <div class="icon">🤖</div>
-      <h3>AI 应用</h3>
-      <p>大模型 · 提示工程 · CV</p>
-    </div>
-    <div class="skill-card">
-      <div class="icon">💻</div>
-      <h3>编程入门</h3>
-      <p>Python · HTML/CSS</p>
-    </div>
-    <div class="skill-card">
-      <div class="icon">🔬</div>
-      <h3>光电技术</h3>
-      <p>光学基础 · 传感 · 成像</p>
-    </div>
-    <div class="skill-card">
-      <div class="icon">📱</div>
-      <h3>数码评测</h3>
-      <p>产品体验 · 硬件探索</p>
-    </div>
-    <div class="skill-card">
-      <div class="icon">🎨</div>
-      <h3>后期处理</h3>
-      <p>Lightroom · Photoshop</p>
+<section class="about fade-up" id="about">
+  <h2><span class="accent-dot">·</span>关于我</h2>
+  <div class="about-wrap">
+    <p>
+      目前就读于武汉职业技术大学光电信息工程技术专业，对光学成像与智能算法交叉领域充满好奇。
+      课余时间沉迷摄影，喜欢用镜头捕捉光影瞬间；同时也是数码发烧友，热爱折腾各种硬件与新工具。
+      课余自学 AI 相关技术，探索大模型与计算机视觉的前沿应用。
+    </p>
+    <div class="stat-grid">
+      <div class="stat-card tilt-card">
+        <div class="num">2024</div>
+        <div class="label">入学年份</div>
+      </div>
+      <div class="stat-card tilt-card">
+        <div class="num">∞</div>
+        <div class="label">探索热情</div>
+      </div>
+      <div class="stat-card tilt-card">
+        <div class="num">WH</div>
+        <div class="label">所在城市</div>
+      </div>
+      <div class="stat-card tilt-card">
+        <div class="num">AI</div>
+        <div class="label">主攻方向</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="projects" id="projects">
-  <h2>项目 & 实践</h2>
-  <div class="project-list">
-    <div class="project-card">
-      <div class="meta">
-        <h3>AI 图像创作实验</h3>
-        <div class="tag-list">
-          <span>Stable Diffusion</span><span>ComfyUI</span>
-        </div>
+<section class="skills fade-up" id="skills">
+  <h2><span class="accent-dot">·</span>技能 & 兴趣</h2>
+  <div class="skill-grid" id="skillGrid">
+    <div class="skill-card">
+      <div class="skill-card-inner">
+        <div class="icon">📷</div>
+        <h3>摄影</h3>
+        <p>风光 · 街拍 · 人像</p>
       </div>
-      <p>探索 AI 生图工作流，从文生图到 ControlNet 精准控制，记录实验过程与调参心得。</p>
     </div>
-    <div class="project-card">
-      <div class="meta">
-        <h3>个人摄影作品集</h3>
-        <div class="tag-list">
-          <span>Lightroom</span><span>作品整理</span>
-        </div>
+    <div class="skill-card">
+      <div class="skill-card-inner">
+        <div class="icon">🤖</div>
+        <h3>AI 应用</h3>
+        <p>大模型 · 提示工程 · CV</p>
       </div>
-      <p>持续积累街头与风光摄影作品，用镜头记录城市烟火与自然之美。</p>
     </div>
-    <div class="project-card">
-      <div class="meta">
-        <h3>大模型学习笔记</h3>
-        <div class="tag-list">
-          <span>LLM</span><span>Prompt Engineering</span>
-        </div>
+    <div class="skill-card">
+      <div class="skill-card-inner">
+        <div class="icon">💻</div>
+        <h3>编程入门</h3>
+        <p>Python · HTML/CSS</p>
       </div>
-      <p>整理大语言模型使用技巧、RAG 实践与 Agent 开发的学习笔记。</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-inner">
+        <div class="icon">🔬</div>
+        <h3>光电技术</h3>
+        <p>光学基础 · 传感 · 成像</p>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-inner">
+        <div class="icon">📱</div>
+        <h3>数码评测</h3>
+        <p>产品体验 · 硬件探索</p>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-inner">
+        <div class="icon">🎨</div>
+        <h3>后期处理</h3>
+        <p>Lightroom · Photoshop</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="contact" id="contact">
-  <h2>联系我</h2>
+<section class="projects fade-up" id="projects">
+  <h2><span class="accent-dot">·</span>项目 & 实践</h2>
+  <div class="project-list" id="projectList">
+    <div class="project-card">
+      <div class="project-card-inner">
+        <div class="meta">
+          <h3>AI 图像创作实验</h3>
+          <div class="tag-list">
+            <span>Stable Diffusion</span><span>ComfyUI</span>
+          </div>
+        </div>
+        <p>探索 AI 生图工作流，从文生图到 ControlNet 精准控制，记录实验过程与调参心得。</p>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-card-inner">
+        <div class="meta">
+          <h3>个人摄影作品集</h3>
+          <div class="tag-list">
+            <span>Lightroom</span><span>作品整理</span>
+          </div>
+        </div>
+        <p>持续积累街头与风光摄影作品，用镜头记录城市烟火与自然之美。</p>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-card-inner">
+        <div class="meta">
+          <h3>大模型学习笔记</h3>
+          <div class="tag-list">
+            <span>LLM</span><span>Prompt Engineering</span>
+          </div>
+        </div>
+        <p>整理大语言模型使用技巧、RAG 实践与 Agent 开发的学习笔记。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact fade-up" id="contact">
+  <h2><span class="accent-dot">·</span>联系我</h2>
   <p>对摄影、AI 或数码有共同兴趣？欢迎来信交流。</p>
   <a class="email" href="mailto:LH2878368528@163.com">LH2878368528@163.com</a>
 </section>
@@ -284,6 +424,139 @@
 <footer>
   &copy; 2026 wildfire · 保持好奇，保持热爱
 </footer>
+
+<script>
+// ── Starfield Canvas ──
+(function() {
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let w, h;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  function createStars() {
+    stars = [];
+    const count = Math.floor((w * h) / 3500);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.2 + 0.3,
+        a: Math.random(),
+        speed: Math.random() * 0.008 + 0.003,
+        da: Math.random() * 0.02 + 0.005
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (let s of stars) {
+      s.a += s.da;
+      if (s.a > 1 || s.a < 0.15) s.da *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.a * 0.6})`;
+      ctx.fill();
+    }
+  }
+
+  function animate() {
+    draw();
+    for (let s of stars) {
+      s.y -= s.speed;
+      if (s.y < -5) { s.y = h + 5; s.x = Math.random() * w; }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  resize(); createStars(); animate();
+  window.addEventListener('resize', () => { resize(); createStars(); });
+})();
+
+// ── Mouse Spotlight ──
+(function() {
+  const spotlight = document.getElementById('spotlight');
+  let mx = -500, my = -500;
+  let cx = -500, cy = -500;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseleave', () => { mx = -500; my = -500; });
+
+  function follow() {
+    cx += (mx - cx) * 0.08;
+    cy += (my - cy) * 0.08;
+    spotlight.style.left = cx + 'px';
+    spotlight.style.top = cy + 'px';
+    spotlight.style.opacity = mx < 0 ? '0' : '1';
+    requestAnimationFrame(follow);
+  }
+  follow();
+})();
+
+// ── Scroll Fade-Up ──
+(function() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  // Also trigger hero immediately
+  setTimeout(() => {
+    document.querySelector('.hero.fade-up')?.classList.add('visible');
+  }, 100);
+})();
+
+// ── 3D Tilt on Cards ──
+function addTilt(selector, inner) {
+  document.querySelectorAll(selector).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rx = ((y - cy) / cy) * 8;
+      const ry = ((x - cx) / cx) * -8;
+      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)';
+    });
+  });
+}
+
+addTilt('.skill-card', '.skill-card-inner');
+addTilt('.project-card', '.project-card-inner');
+addTilt('.stat-card', '');
+
+// ── Smooth parallax on scroll ──
+(function() {
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+        const hero = document.querySelector('.hero');
+        if (hero) {
+          hero.style.transform = `translateY(${scrolled * 0.15}px)`;
+          hero.style.opacity = Math.max(0, 1 - scrolled / 700);
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
