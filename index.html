@@ -6,554 +6,483 @@
 <title>wildfire · 个人主页</title>
 <style>
   :root {
-    --bg: #000000;
-    --surface: rgba(255,255,255,0.03);
+    --bg: #060609;
+    --surface: #0c0c14;
+    --elevated: #11111c;
     --border: rgba(255,255,255,0.06);
-    --text: #f5f5f7;
-    --muted: #86868b;
-    --accent: #6c5ce7;
-    --accent-glow: #a29bfe;
+    --border-hover: rgba(255,255,255,0.12);
+    --text: #eaeaf0;
+    --ink: #c4c4d0;
+    --muted: #6e6e80;
+    --accent: #7c5cfc;
+    --accent-soft: rgba(124,92,252,0.12);
+    --amber: #f0a040;
+    --amber-soft: rgba(240,160,64,0.12);
+    --radius-sm: 10px;
+    --radius: 18px;
+    --radius-lg: 24px;
+    --ease-out: cubic-bezier(0.16,1,0.3,1);
+    --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    cursor: default;
   }
 
-  /* ── Canvas Starfield ── */
-  #starfield {
-    position: fixed; inset: 0; z-index: 0;
-    pointer-events: none;
-  }
+  /* ── Starfield ── */
+  #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
-  /* ── Mouse Spotlight ── */
-  .spotlight {
+  /* ── Mouse glow ── */
+  .glow {
     position: fixed; pointer-events: none; z-index: 9999;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(108,92,231,0.06) 0%, transparent 60%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(124,92,252,0.05) 0%, transparent 60%);
+    border-radius: 50%; transform: translate(-50%, -50%);
   }
 
-  /* ── Navigation ── */
+  /* ── Nav ── */
   nav {
     position: fixed; top:0; left:0; right:0; z-index:100;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(6,6,9,0.5);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
     border-bottom: 1px solid var(--border);
     display: flex; justify-content: center; gap: 2.5rem;
-    padding: 0.9rem;
+    padding: 0.85rem;
   }
   nav a {
     color: var(--muted); text-decoration: none;
-    font-size: 0.85rem; font-weight: 500;
-    transition: color 0.3s; letter-spacing: 0.02em;
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.3s;
   }
   nav a:hover { color: var(--text); }
 
   /* ── Sections ── */
   section {
     position: relative; z-index:1;
-    max-width: 880px; margin: 0 auto;
-    padding: 6rem 2rem;
+    max-width: 920px; margin: 0 auto;
+    padding: 7rem 2rem;
   }
 
-  /* ── Scroll fade-in ── */
-  .fade-up {
+  /* ── Reveal animations ── */
+  .reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
   }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .reveal-up { transform: translateY(40px); }
+  .reveal-left { transform: translateX(-30px); }
+  .reveal-right { transform: translateX(30px); }
+  .reveal-scale { transform: scale(0.95); }
+  .reveal.visible { opacity: 1; transform: none; }
 
   /* ── Hero ── */
   .hero {
     min-height: 100vh; display:flex; flex-direction:column;
-    justify-content: center; align-items: flex-start;
-    padding-top: 0;
+    justify-content: center; padding-top: 0;
   }
-  .hero .tag {
-    display: inline-block;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 50px;
-    padding: 0.35rem 1.2rem;
-    font-size: 0.8rem; color: var(--muted);
-    margin-bottom: 2rem;
-    letter-spacing: 0.06em;
-    backdrop-filter: blur(10px);
+  .hero .label {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50px; padding: 0.3rem 1rem 0.3rem 0.6rem;
+    font-size: 0.78rem; color: var(--muted);
+    margin-bottom: 2.5rem; letter-spacing: 0.03em;
     background: rgba(255,255,255,0.02);
   }
-  .hero h1 {
-    font-size: clamp(3rem, 7vw, 5rem);
-    font-weight: 600; letter-spacing: -0.03em;
-    line-height: 1.05;
+  .hero .label .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 8px var(--amber);
   }
-  .hero h1 .highlight {
-    background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8);
+  .hero h1 {
+    font-size: clamp(3.2rem, 7vw, 5.5rem);
+    font-weight: 600; letter-spacing: -0.04em;
+    line-height: 1.02; margin-bottom: 0.15em;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--accent) 20%, #c084fc 55%, var(--amber) 90%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .hero p {
-    color: var(--muted); font-size: 1.15rem;
+  .hero .sub {
+    color: var(--muted); font-size: 1.1rem;
     max-width: 520px; margin-top: 1.5rem;
-    line-height: 1.7;
+    line-height: 1.75;
   }
-  .hero .links {
+  .hero .cta-row {
     display: flex; gap: 1rem; margin-top: 2.5rem;
   }
-  .hero .links a {
-    border: 1px solid rgba(255,255,255,0.12);
+  .hero .cta-row a {
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 50px; padding: 0.7rem 1.8rem;
     color: var(--text); text-decoration: none;
     font-size: 0.9rem; font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.25,1,0.5,1);
-    backdrop-filter: blur(10px);
+    transition: all 0.3s var(--ease-out);
   }
-  .hero .links a:hover {
-    border-color: rgba(108,92,231,0.5);
-    background: rgba(108,92,231,0.1);
-    transform: translateY(-1px);
+  .hero .cta-row a:hover {
+    border-color: rgba(124,92,252,0.4);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
   }
-  .hero .links a.primary {
-    background: #6c5ce7; border-color: #6c5ce7;
+  .hero .cta-row a.primary {
+    background: var(--accent); border-color: var(--accent);
   }
-  .hero .links a.primary:hover {
-    background: #5a4bd1;
-    box-shadow: 0 8px 30px rgba(108,92,231,0.3);
+  .hero .cta-row a.primary:hover {
+    background: #6b4aee;
+    box-shadow: 0 12px 40px rgba(124,92,252,0.25);
   }
 
-  /* ── Section titles ── */
-  h2 {
-    font-size: 2rem; font-weight: 600;
-    margin-bottom: 3rem; letter-spacing: -0.02em;
-    position: relative; display: inline-block;
+  /* ── Section heading ── */
+  .sec-head {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 3rem;
   }
-  h2 .accent-dot {
-    color: var(--accent); margin-right: 0.4rem;
+  .sec-head .num {
+    font-size: 0.75rem; color: var(--amber); font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+  .sec-head h2 {
+    font-size: 2rem; font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
   /* ── About ── */
-  .about-wrap {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
     align-items: start;
   }
-  .about p { color: var(--muted); font-size: 1rem; line-height: 1.8; }
-  .about .stat-grid {
+  .about p {
+    color: var(--ink); font-size: 1rem; line-height: 1.85;
+  }
+  .about p em { font-style: normal; color: var(--text); }
+  .about .highlights {
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .highlight-row {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
   }
-  .stat-card {
+  .hl-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 1.5rem;
-    text-align: center;
-    backdrop-filter: blur(10px);
+    border-radius: var(--radius); padding: 1.3rem 1.2rem;
+    transition: border-color 0.3s, background 0.3s;
   }
-  .stat-card .num {
-    font-size: 1.8rem; font-weight: 700;
-    background: linear-gradient(135deg, #a29bfe, #fd79a8);
+  .hl-card:hover { border-color: var(--border-hover); background: var(--elevated); }
+  .hl-card .big {
+    font-size: 1.5rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .stat-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
+  .hl-card .small { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
 
   /* ── Skills ── */
-  .skill-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+  .skills-layout { display: flex; flex-direction: column; gap: 0.85rem; }
+  .skill-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.85rem;
   }
-  .skill-card {
-    perspective: 800px;
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
-  }
-  .skill-card-inner {
+  .skill-row.alt { grid-template-columns: 2fr 1fr; }
+  .skill-item {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 1.5rem;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    border-radius: var(--radius); padding: 1.5rem 1.4rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: all 0.35s var(--ease-out);
+    position: relative; overflow: hidden;
   }
-  .skill-card:hover .skill-card-inner {
-    border-color: rgba(108,92,231,0.3);
-    box-shadow: 0 20px 50px rgba(108,92,231,0.08);
+  .skill-item::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(124,92,252,0.06), transparent 70%);
+    opacity: 0; transition: opacity 0.35s;
   }
-  .skill-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
-  .skill-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
-  .skill-card p { font-size: 0.8rem; color: var(--muted); }
+  .skill-item:hover { border-color: rgba(124,92,252,0.25); }
+  .skill-item:hover::after { opacity: 1; }
+  .skill-item .si-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+  .skill-item h3 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .skill-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
   /* ── Projects ── */
   .project-list { display: flex; flex-direction: column; gap: 1rem; }
-  .project-card {
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
-  }
-  .project-card-inner {
+  .proj-card {
+    display: grid; grid-template-columns: 1fr 1fr;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 20px; padding: 2rem;
-    backdrop-filter: blur(10px);
-    transition: border-color 0.3s, box-shadow 0.3s;
-    position: relative; overflow: hidden;
+    border-radius: var(--radius-lg); overflow: hidden;
+    transition: border-color 0.3s;
   }
-  .project-card-inner::before {
-    content: '';
-    position: absolute; top:0; left:0; right:0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(108,92,231,0.5), transparent);
-    opacity: 0; transition: opacity 0.3s;
+  .proj-card:hover { border-color: rgba(124,92,252,0.2); }
+  .proj-card .proj-img {
+    aspect-ratio: 16/10; background: linear-gradient(135deg, #12122a 0%, #1a1028 50%, #0f1a24 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; position: relative; overflow: hidden;
   }
-  .project-card:hover .project-card-inner::before { opacity: 1; }
-  .project-card:hover .project-card-inner {
-    border-color: rgba(108,92,231,0.25);
-    box-shadow: 0 20px 60px rgba(108,92,231,0.06);
+  .proj-card .proj-img::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(124,92,252,0.1) 0%, transparent 60%);
   }
-  .project-card .meta {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 0.75rem;
+  .proj-card .proj-info {
+    padding: 2rem; display: flex; flex-direction: column; justify-content: center;
   }
-  .project-card h3 { font-size: 1.15rem; font-weight: 600; }
-  .project-card .tag-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-  .project-card .tag-list span {
-    font-size: 0.7rem; background: rgba(108,92,231,0.12);
-    color: var(--accent-glow); padding: 0.2rem 0.7rem;
+  .proj-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .proj-card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .proj-card .tags span {
+    font-size: 0.68rem; background: rgba(124,92,252,0.1);
+    color: #b4a0ff; padding: 0.15rem 0.6rem;
     border-radius: 50px; font-weight: 500;
   }
-  .project-card p { color: var(--muted); font-size: 0.9rem; margin-top: 0.75rem; line-height: 1.7; }
+  .proj-card p { font-size: 0.85rem; color: var(--ink); line-height: 1.7; }
 
   /* ── Contact ── */
-  .contact { text-align: center; }
-  .contact p { color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
-  .contact .email {
-    display: inline-block;
-    border: 1px solid rgba(255,255,255,0.12); border-radius: 50px;
-    padding: 0.8rem 2.5rem;
-    color: var(--text); text-decoration: none;
-    font-weight: 500; font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.25,1,0.5,1);
-    backdrop-filter: blur(10px);
-    background: rgba(108,92,231,0.05);
+  .contact-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
   }
-  .contact .email:hover {
+  .contact-wrap > p { color: var(--ink); margin-bottom: 2rem; max-width: 420px; }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 50px;
+    padding: 0.85rem 2.5rem;
+    color: var(--text); text-decoration: none;
+    font-weight: 500; font-size: 0.95rem;
+    transition: all 0.3s var(--ease-out);
+    background: var(--accent-soft);
+  }
+  .contact-link:hover {
     border-color: var(--accent);
-    background: rgba(108,92,231,0.12);
-    box-shadow: 0 8px 30px rgba(108,92,231,0.15);
+    background: rgba(124,92,252,0.18);
+    box-shadow: 0 10px 35px rgba(124,92,252,0.15);
     transform: translateY(-2px);
   }
 
   /* ── Footer ── */
   footer {
-    text-align: center; padding: 2rem;
+    text-align: center; padding: 2.5rem;
     color: var(--muted); font-size: 0.8rem;
     border-top: 1px solid var(--border);
     position: relative; z-index: 1;
   }
 
-  /* ── Responsive ── */
-  @media (max-width: 700px) {
-    nav { gap: 1.2rem; padding: 0.8rem; }
-    nav a { font-size: 0.75rem; }
-    section { padding: 4rem 1.2rem; }
+  @media (max-width: 768px) {
+    nav { gap: 1.2rem; }
+    section { padding: 5rem 1.2rem; }
     .hero { min-height: 80vh; }
-    .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
-    .about-wrap { grid-template-columns: 1fr; }
-    .skill-grid { grid-template-columns: repeat(2, 1fr); }
-    .spotlight { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .skill-row { grid-template-columns: 1fr 1fr; }
+    .skill-row.alt { grid-template-columns: 1fr; }
+    .proj-card { grid-template-columns: 1fr; }
+    .proj-card .proj-img { aspect-ratio: 2/1; }
+    .glow { display: none; }
+  }
+  @media (max-width: 480px) {
+    .skill-row, .highlight-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <canvas id="starfield"></canvas>
-<div class="spotlight" id="spotlight"></div>
+<div class="glow" id="glow"></div>
 
 <nav>
-  <a href="#home">首页</a>
-  <a href="#about">关于</a>
-  <a href="#skills">技能</a>
-  <a href="#projects">项目</a>
-  <a href="#contact">联系</a>
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#projects">Projects</a>
+  <a href="#contact">Contact</a>
 </nav>
 
-<section class="hero fade-up" id="home">
-  <div class="tag">🎓 在读大学生</div>
-  <h1>你好，我是<br><span class="highlight">wildfire</span></h1>
-  <p>
+<!-- ── Hero ── -->
+<section class="hero" id="home">
+  <div class="label reveal reveal-up">
+    <span class="dot"></span> 武汉 · 在读大学生
+  </div>
+  <h1 class="reveal reveal-up" style="transition-delay:0.1s">
+    wildfire<span class="gradient">.</span>
+  </h1>
+  <p class="sub reveal reveal-up" style="transition-delay:0.2s">
     武汉职业技术大学 · 光电信息工程技术专业<br>
-    热爱摄影与数码，痴迷于 AI 技术带来的无限可能。
+    摄影与光学的交汇处，数码与 AI 的探索者。
   </p>
-  <div class="links">
+  <div class="cta-row reveal reveal-up" style="transition-delay:0.3s">
     <a class="primary" href="https://github.com/wildfirelh" target="_blank">GitHub</a>
-    <a href="#projects">查看项目 ↓</a>
+    <a href="#about">了解更多</a>
   </div>
 </section>
 
-<section class="about fade-up" id="about">
-  <h2><span class="accent-dot">·</span>关于我</h2>
-  <div class="about-wrap">
-    <p>
-      目前就读于武汉职业技术大学光电信息工程技术专业，对光学成像与智能算法交叉领域充满好奇。
-      课余时间沉迷摄影，喜欢用镜头捕捉光影瞬间；同时也是数码发烧友，热爱折腾各种硬件与新工具。
-      课余自学 AI 相关技术，探索大模型与计算机视觉的前沿应用。
+<!-- ── About ── -->
+<section id="about">
+  <div class="sec-head reveal reveal-left">
+    <span class="num">01</span>
+    <h2>关于我</h2>
+  </div>
+  <div class="about-grid">
+    <p class="reveal reveal-up">
+      就读于<em>武汉职业技术大学光电信息工程技术专业</em>，
+      对光学成像与智能算法交叉领域充满好奇。
+      课余沉迷摄影，用镜头捕捉光影；
+      同时是数码发烧友，热爱折腾硬件与新工具。
+      自学 AI，探索大模型与计算机视觉的前沿应用。
     </p>
-    <div class="stat-grid">
-      <div class="stat-card tilt-card">
-        <div class="num">2024</div>
-        <div class="label">入学年份</div>
+    <div class="highlights">
+      <div class="highlight-row reveal reveal-right">
+        <div class="hl-card"><div class="big">2024</div><div class="small">入学年份</div></div>
+        <div class="hl-card"><div class="big">WH</div><div class="small">所在城市</div></div>
       </div>
-      <div class="stat-card tilt-card">
-        <div class="num">∞</div>
-        <div class="label">探索热情</div>
-      </div>
-      <div class="stat-card tilt-card">
-        <div class="num">WH</div>
-        <div class="label">所在城市</div>
-      </div>
-      <div class="stat-card tilt-card">
-        <div class="num">AI</div>
-        <div class="label">主攻方向</div>
+      <div class="highlight-row reveal reveal-right" style="transition-delay:0.1s">
+        <div class="hl-card"><div class="big">📷</div><div class="small">摄影热爱</div></div>
+        <div class="hl-card"><div class="big">AI</div><div class="small">主攻方向</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="skills fade-up" id="skills">
-  <h2><span class="accent-dot">·</span>技能 & 兴趣</h2>
-  <div class="skill-grid" id="skillGrid">
-    <div class="skill-card">
-      <div class="skill-card-inner">
-        <div class="icon">📷</div>
-        <h3>摄影</h3>
-        <p>风光 · 街拍 · 人像</p>
+<!-- ── Skills ── -->
+<section id="skills">
+  <div class="sec-head reveal reveal-left">
+    <span class="num">02</span>
+    <h2>技能 & 兴趣</h2>
+  </div>
+  <div class="skills-layout">
+    <div class="skill-row reveal reveal-up">
+      <div class="skill-item">
+        <span class="si-icon">📷</span>
+        <div><h3>摄影</h3><p>风光 · 街拍 · 人像</p></div>
+      </div>
+      <div class="skill-item">
+        <span class="si-icon">🤖</span>
+        <div><h3>AI 应用</h3><p>大模型 · 提示工程 · CV</p></div>
+      </div>
+      <div class="skill-item">
+        <span class="si-icon">💻</span>
+        <div><h3>编程入门</h3><p>Python · HTML/CSS</p></div>
       </div>
     </div>
-    <div class="skill-card">
-      <div class="skill-card-inner">
-        <div class="icon">🤖</div>
-        <h3>AI 应用</h3>
-        <p>大模型 · 提示工程 · CV</p>
+    <div class="skill-row alt reveal reveal-up" style="transition-delay:0.1s">
+      <div class="skill-item">
+        <span class="si-icon">🔬</span>
+        <div><h3>光电技术</h3><p>光学基础 · 传感器原理 · 成像系统</p></div>
       </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-inner">
-        <div class="icon">💻</div>
-        <h3>编程入门</h3>
-        <p>Python · HTML/CSS</p>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-inner">
-        <div class="icon">🔬</div>
-        <h3>光电技术</h3>
-        <p>光学基础 · 传感 · 成像</p>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-inner">
-        <div class="icon">📱</div>
-        <h3>数码评测</h3>
-        <p>产品体验 · 硬件探索</p>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-inner">
-        <div class="icon">🎨</div>
-        <h3>后期处理</h3>
-        <p>Lightroom · Photoshop</p>
+      <div class="skill-item" style="background:linear-gradient(135deg, rgba(124,92,252,0.08), rgba(240,160,64,0.06));border-color:rgba(124,92,252,0.12);">
+        <span class="si-icon">✨</span>
+        <div><h3>数码 & 后期</h3><p>产品评测 · Lightroom · Photoshop</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="projects fade-up" id="projects">
-  <h2><span class="accent-dot">·</span>项目 & 实践</h2>
-  <div class="project-list" id="projectList">
-    <div class="project-card">
-      <div class="project-card-inner">
-        <div class="meta">
-          <h3>AI 图像创作实验</h3>
-          <div class="tag-list">
-            <span>Stable Diffusion</span><span>ComfyUI</span>
-          </div>
-        </div>
-        <p>探索 AI 生图工作流，从文生图到 ControlNet 精准控制，记录实验过程与调参心得。</p>
+<!-- ── Projects ── -->
+<section id="projects">
+  <div class="sec-head reveal reveal-left">
+    <span class="num">03</span>
+    <h2>项目 & 实践</h2>
+  </div>
+  <div class="project-list">
+    <div class="proj-card reveal reveal-up">
+      <div class="proj-img">🎨</div>
+      <div class="proj-info">
+        <h3>AI 图像创作实验</h3>
+        <div class="tags"><span>Stable Diffusion</span><span>ComfyUI</span></div>
+        <p>探索 AI 生图工作流，从文生图到 ControlNet 精准控制，记录实验与调参心得。</p>
       </div>
     </div>
-    <div class="project-card">
-      <div class="project-card-inner">
-        <div class="meta">
-          <h3>个人摄影作品集</h3>
-          <div class="tag-list">
-            <span>Lightroom</span><span>作品整理</span>
-          </div>
-        </div>
+    <div class="proj-card reveal reveal-up" style="transition-delay:0.1s">
+      <div class="proj-img">📸</div>
+      <div class="proj-info">
+        <h3>个人摄影作品集</h3>
+        <div class="tags"><span>Lightroom</span><span>作品整理</span></div>
         <p>持续积累街头与风光摄影作品，用镜头记录城市烟火与自然之美。</p>
       </div>
     </div>
-    <div class="project-card">
-      <div class="project-card-inner">
-        <div class="meta">
-          <h3>大模型学习笔记</h3>
-          <div class="tag-list">
-            <span>LLM</span><span>Prompt Engineering</span>
-          </div>
-        </div>
+    <div class="proj-card reveal reveal-up" style="transition-delay:0.2s">
+      <div class="proj-img">🧠</div>
+      <div class="proj-info">
+        <h3>大模型学习笔记</h3>
+        <div class="tags"><span>LLM</span><span>Prompt Engineering</span></div>
         <p>整理大语言模型使用技巧、RAG 实践与 Agent 开发的学习笔记。</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="contact fade-up" id="contact">
-  <h2><span class="accent-dot">·</span>联系我</h2>
-  <p>对摄影、AI 或数码有共同兴趣？欢迎来信交流。</p>
-  <a class="email" href="mailto:LH2878368528@163.com">LH2878368528@163.com</a>
+<!-- ── Contact ── -->
+<section id="contact">
+  <div class="sec-head reveal reveal-left">
+    <span class="num">04</span>
+    <h2>联系我</h2>
+  </div>
+  <div class="contact-wrap reveal reveal-up">
+    <p>对摄影、AI 或数码有共同兴趣？欢迎来信交流想法与合作。</p>
+    <a class="contact-link" href="mailto:LH2878368528@163.com">
+      ✉️ LH2878368528@163.com
+    </a>
+  </div>
 </section>
 
-<footer>
-  &copy; 2026 wildfire · 保持好奇，保持热爱
-</footer>
+<footer>&copy; 2026 wildfire · 保持好奇，保持热爱</footer>
 
 <script>
-// ── Starfield Canvas ──
-(function() {
-  const canvas = document.getElementById('starfield');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-  let w, h;
-
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+// ── Starfield ──
+(function(){
+  const c=document.getElementById('starfield'),ctx=c.getContext('2d');
+  let stars=[],w,h;
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}
+  function init(){
+    stars=[];const n=~~(w*h/3200);
+    for(let i=0;i<n;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.1+0.3,a:Math.random(),s:Math.random()*0.006+0.002,da:Math.random()*0.018+0.004});
   }
-
-  function createStars() {
-    stars = [];
-    const count = Math.floor((w * h) / 3500);
-    for (let i = 0; i < count; i++) {
-      stars.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 1.2 + 0.3,
-        a: Math.random(),
-        speed: Math.random() * 0.008 + 0.003,
-        da: Math.random() * 0.02 + 0.005
-      });
-    }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(let s of stars){s.a+=s.da;if(s.a>1||s.a<0.12)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.a*0.55})`;ctx.fill();}
   }
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    for (let s of stars) {
-      s.a += s.da;
-      if (s.a > 1 || s.a < 0.15) s.da *= -1;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${s.a * 0.6})`;
-      ctx.fill();
-    }
+  function loop(){
+    draw();for(let s of stars){s.y-=s.s;if(s.y<-5){s.y=h+5;s.x=Math.random()*w;}}requestAnimationFrame(loop);
   }
-
-  function animate() {
-    draw();
-    for (let s of stars) {
-      s.y -= s.speed;
-      if (s.y < -5) { s.y = h + 5; s.x = Math.random() * w; }
-    }
-    requestAnimationFrame(animate);
-  }
-
-  resize(); createStars(); animate();
-  window.addEventListener('resize', () => { resize(); createStars(); });
+  resize();init();loop();addEventListener('resize',()=>{resize();init();});
 })();
 
-// ── Mouse Spotlight ──
-(function() {
-  const spotlight = document.getElementById('spotlight');
-  let mx = -500, my = -500;
-  let cx = -500, cy = -500;
-
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  document.addEventListener('mouseleave', () => { mx = -500; my = -500; });
-
-  function follow() {
-    cx += (mx - cx) * 0.08;
-    cy += (my - cy) * 0.08;
-    spotlight.style.left = cx + 'px';
-    spotlight.style.top = cy + 'px';
-    spotlight.style.opacity = mx < 0 ? '0' : '1';
-    requestAnimationFrame(follow);
-  }
-  follow();
+// ── Mouse glow ──
+(function(){
+  const g=document.getElementById('glow');let mx=-500,my=-500,ox=-500,oy=-500;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  addEventListener('mouseleave',()=>{mx=-500;my=-500;});
+  function tick(){ox+=(mx-ox)*0.07;oy+=(my-oy)*0.07;g.style.left=ox+'px';g.style.top=oy+'px';g.style.opacity=mx<0?'0':'1';requestAnimationFrame(tick);}
+  tick();
 })();
 
-// ── Scroll Fade-Up ──
-(function() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-  // Also trigger hero immediately
-  setTimeout(() => {
-    document.querySelector('.hero.fade-up')?.classList.add('visible');
-  }, 100);
+// ── Scroll reveal ──
+(function(){
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  setTimeout(()=>{document.querySelectorAll('.hero .reveal').forEach(el=>el.classList.add('visible'));},80);
 })();
 
-// ── 3D Tilt on Cards ──
-function addTilt(selector, inner) {
-  document.querySelectorAll(selector).forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const rx = ((y - cy) / cy) * 8;
-      const ry = ((x - cx) / cx) * -8;
-      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)';
-    });
+// ── Hero parallax ──
+(function(){
+  let t=false;
+  addEventListener('scroll',()=>{
+    if(!t){requestAnimationFrame(()=>{
+      const s=scrollY,h=document.querySelector('.hero');
+      if(h){h.style.transform=`translateY(${s*0.12}px)`;h.style.opacity=Math.max(0,1-s/800);}
+      t=false;
+    });t=true;}
   });
-}
+})();
 
-addTilt('.skill-card', '.skill-card-inner');
-addTilt('.project-card', '.project-card-inner');
-addTilt('.stat-card', '');
-
-// ── Smooth parallax on scroll ──
-(function() {
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const scrolled = window.scrollY;
-        const hero = document.querySelector('.hero');
-        if (hero) {
-          hero.style.transform = `translateY(${scrolled * 0.15}px)`;
-          hero.style.opacity = Math.max(0, 1 - scrolled / 700);
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
+// ── 3D tilt for highlight cards ──
+(function(){
+  document.querySelectorAll('.hl-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,cx=r.width/2,cy=r.height/2;
+      card.style.transform=`perspective(600px) rotateX(${((y-cy)/cy)*6}deg) rotateY(${((x-cx)/cx)*-6}deg)`;
+    });
+    card.addEventListener('mouseleave',()=>{card.style.transform='';});
   });
 })();
 </script>
