@@ -2,199 +2,140 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#24292e">
-<title>wildfire</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;font-size:16px}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-    color:#fff;background:#1b1f23;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  }
-  a{text-decoration:none;color:inherit}
-
-  /* ═══ Panel cover ═══ */
-  .panel-cover{
-    display:flex;flex-direction:column;justify-content:center;align-items:center;
-    min-height:100vh;padding:1.5rem;
-    position:relative;
-    background:linear-gradient(135deg,#1a1e23 0%,#24292e 40%,#2d333b 100%);
-  }
-  .panel-cover::before{
-    content:'';position:absolute;inset:0;
-    background:radial-gradient(ellipse at 30% 20%,rgba(99,158,255,.06) 0%,transparent 60%),
-               radial-gradient(ellipse at 70% 80%,rgba(147,112,219,.04) 0%,transparent 50%);
-    pointer-events:none;
-  }
-  .panel-cover--overlay{
-    position:absolute;inset:0;
-    background:rgba(27,31,35,.55);pointer-events:none;
-  }
-  .panel-main{
-    position:relative;z-index:1;text-align:center;max-width:520px;width:100%;
-  }
-
-  /* ═══ Avatar ═══ */
-  .avatar-wrap{position:relative;display:inline-block;margin-bottom:1.2rem}
-  .avatar-img{
-    width:100px;height:100px;border-radius:50%;border:3px solid rgba(255,255,255,.15);
-    display:inline-flex;align-items:center;justify-content:center;
-    font-size:2.5rem;background:rgba(255,255,255,.04);
-    transition:transform .5s;
-  }
-  .avatar-wrap:hover .avatar-img{transform:rotate(360deg)}
-
-  .title{font-size:1.7rem;font-weight:700;color:#fff;margin-bottom:.25rem}
-  .subtitle{font-size:.88rem;color:#8b949e;margin-bottom:1rem}
-  .divider{width:40px;height:2px;background:rgba(255,255,255,.12);margin:0 auto 1rem;border:none}
-  .desc{font-size:.82rem;color:#768390;line-height:1.7;margin-bottom:1.5rem}
-
-  /* ═══ Nav tabs ═══ */
-  .nav-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem;margin-bottom:1.2rem}
-  .nav-tabs button{
-    background:transparent;border:1px solid rgba(255,255,255,.1);
-    color:#8b949e;padding:.35rem .9rem;border-radius:50px;
-    font-size:.75rem;cursor:pointer;transition:all .25s;
-    font-family:inherit;
-  }
-  .nav-tabs button:hover,.nav-tabs button.on{
-    border-color:rgba(99,158,255,.4);color:#79b8ff;background:rgba(99,158,255,.06);
-  }
-
-  /* ═══ Tab content ═══ */
-  .tab-content{min-height:120px;transition:opacity .3s}
-  .tab-pane{display:none;animation:fadeIn .35s}
-  .tab-pane.active{display:block}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-  .tab-pane p{font-size:.78rem;color:#8b949e;line-height:1.75;text-align:left}
-  .tab-pane .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center}
-  .tab-pane .tag-row span{
-    padding:.25rem .6rem;border:1px solid rgba(255,255,255,.08);
-    border-radius:50px;font-size:.7rem;color:#8b949e;
-    transition:all .25s;
-  }
-  .tab-pane .tag-row span:hover{border-color:rgba(99,158,255,.3);color:#79b8ff}
-  .tab-pane .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem}
-  .tab-pane .nav-grid a{
-    display:flex;align-items:center;justify-content:center;gap:.25rem;
-    padding:.4rem;border:1px solid rgba(255,255,255,.06);
-    border-radius:10px;font-size:.66rem;color:#8b949e;transition:all .25s;
-  }
-  .tab-pane .nav-grid a:hover{border-color:rgba(99,158,255,.3);color:#79b8ff}
-
-  /* ═══ Social links ═══ */
-  .social-links{display:flex;justify-content:center;gap:.5rem;margin-top:1.2rem}
-  .social-links a{
-    width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.08);
-    display:flex;align-items:center;justify-content:center;font-size:.85rem;
-    color:#8b949e;transition:all .25s;
-  }
-  .social-links a:hover{border-color:rgba(99,158,255,.35);color:#79b8ff;background:rgba(99,158,255,.06)}
-
-  footer{font-size:.62rem;color:#484f58;margin-top:1.5rem}
-
-  /* ═══ Mobile menu ═══ */
-  .mobile-btn{display:none;position:fixed;top:.8rem;right:.8rem;z-index:100;
-    width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.12);
-    align-items:center;justify-content:center;font-size:1rem;color:#8b949e;
-    cursor:pointer;background:rgba(27,31,35,.8);backdrop-filter:blur(10px)}
-
-  @media(max-width:640px){
-    .mobile-btn{display:flex}
-    .panel-cover{padding:2.5rem 1rem 2rem}
-    .tab-pane .nav-grid{grid-template-columns:repeat(2,1fr)}
-    .title{font-size:1.3rem}
-  }
-</style>
+<meta name="description" content="wildfire Home">
+<meta name="keywords" content="wildfire,Homepage">
+<meta name="author" content="wildfire">
+<meta name="theme-color" content="#222325">
+<title>wildfire Home</title>
+<link rel="stylesheet" href="https://unpkg.com/dmego-home-page@latest/assets/css/onlinewebfonts.css">
+<link rel="stylesheet" href="https://unpkg.com/dmego-home-page@latest/assets/css/vno.css">
+<link rel="stylesheet" href="https://unpkg.com/dmego-home-page@latest/assets/css/iconfont.css">
+<link rel="stylesheet" href="https://unpkg.com/dmego-home-page@latest/assets/css/wakatime-theme.css">
+<link rel="apple-touch-icon" href="https://unpkg.com/dmego-home-page@latest/apple-touch-icon.png">
+<link rel="icon" href="https://unpkg.com/dmego-home-page@latest/favicon.ico">
 </head>
 <body>
 
-<span class="mobile-btn" id="mbtn" title="Go to content">↓</span>
+<span class="mobile btn-mobile-menu">
+  <i class="social iconfont icon-list btn-mobile-menu__icon"></i>
+  <i class="social iconfont icon-angleup btn-mobile-close__icon hidden"></i>
+</span>
 
-<div class="panel-cover" id="panel">
-  <div class="panel-cover--overlay"></div>
+<header id="panel" class="panel-cover">
   <div class="panel-main">
-    <!-- Avatar -->
-    <div class="avatar-wrap">
-      <div class="avatar-img">🔥</div>
-    </div>
-    <h1 class="title">wildfire</h1>
-    <p class="subtitle">摄影与光学的交汇处 · 数码与 AI 的探索者</p>
-    <hr class="divider">
-    <p class="desc">武汉职业技术大学 · 光电信息工程技术<br>2025 年入学 · 保持好奇，保持热爱</p>
+    <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
 
-    <!-- Nav tabs -->
-    <div class="nav-tabs">
-      <button class="on" data-tab="about">关于我</button>
-      <button data-tab="skills">技能</button>
-      <button data-tab="projects">项目</button>
-      <button data-tab="navs">导航</button>
-      <button data-tab="contact">联系</button>
-    </div>
+        <!-- Avatar -->
+        <div class="ih-item circle effect right_to_left">
+          <a href="#" title="" class="blog-button">
+            <div class="img">
+              <img src="https://unpkg.com/dmego-home-page@latest/assets/img/logo3.jpg" alt="img" class="js-avatar iUp profilepic">
+            </div>
+            <div class="info iUp">
+              <div class="info-back">
+                <h2>🔥 wildfire</h2>
+                <p>保持好奇，保持热爱</p>
+              </div>
+            </div>
+          </a>
+        </div>
 
-    <!-- Tab content -->
-    <div class="tab-content">
-      <div class="tab-pane active" id="tab-about">
-        <p>就读于<strong style="color:#79b8ff">武汉职业技术大学光电信息工程技术专业</strong>，2025 年入学。对光学成像与智能算法交叉领域充满好奇。课余沉迷摄影，用镜头捕捉光影；同时是数码发烧友，热爱折腾硬件与新工具。自学 AI，探索大模型与计算机视觉的前沿应用。</p>
-      </div>
-      <div class="tab-pane" id="tab-skills">
-        <div class="tag-row">
-          <span>📷 摄影</span><span>🤖 AI 应用</span><span>💻 编程</span><span>🔬 光电技术</span><span>📱 数码评测</span><span>🎨 后期</span>
-        </div>
-      </div>
-      <div class="tab-pane" id="tab-projects">
-        <p>🧠 <strong>AI 图像创作实验</strong> — Stable Diffusion · ComfyUI 工作流探索<br>
-        📸 <strong>个人摄影作品集</strong> — 街头与风光摄影积累<br>
-        🤖 <strong>大模型学习笔记</strong> — LLM · Prompt Engineering · RAG 实践</p>
-      </div>
-      <div class="tab-pane" id="tab-navs">
-        <div class="nav-grid">
-          <a href="https://github.com/" target="_blank">🐙 GitHub</a>
-          <a href="https://www.runoob.com/" target="_blank">📘 菜鸟教程</a>
-          <a href="https://sspai.com/" target="_blank">💡 少数派</a>
-          <a href="https://axutongxue.xyz/" target="_blank">🔧 阿虚同学</a>
-          <a href="https://www.423down.com/" target="_blank">⬇ 423Down</a>
-          <a href="https://nav.imyaigc.com/mobile" target="_blank">🤖 AI工具箱</a>
-          <a href="https://greasyfork.wwwnav.com/" target="_blank">🧩 GreasyFork</a>
-          <a href="https://talent.shixizhi.huawei.com/portal/1365189427395223554?pageId=1608380789321072641&activeIndex=-1&sxz-lang=zh_CN" target="_blank">💼 华为实习</a>
-        </div>
-      </div>
-      <div class="tab-pane" id="tab-contact">
-        <p style="text-align:center">对摄影、AI 或数码有共同兴趣？欢迎来信交流。</p>
-        <p style="text-align:center;margin-top:.8rem">
-          <a href="mailto:LH2878368528@163.com" style="color:#79b8ff;border:1px solid rgba(99,158,255,.3);padding:.4rem 1.5rem;border-radius:50px;font-size:.78rem;display:inline-block;transition:all .25s" onmouseover="this.style.background='rgba(99,158,255,.08)'" onmouseout="this.style.background='transparent'">✉️ LH2878368528@163.com</a>
+        <h1 class="panel-cover__title panel-title iUp">
+          <a href="#" title="wildfire Home">wildfire</a>
+        </h1>
+        <p class="panel-cover__subtitle panel-subtitle iUp">摄影与光学的交汇处 · 数码与 AI 的探索者</p>
+
+        <hr class="panel-cover__divider iUp">
+
+        <p id="description" class="panel-cover__description iUp">
+          武汉职业技术大学 · 光电信息工程技术 · 2025 级
+          <br>
+          <strong>— 自学 AI，探索大模型与计算机视觉</strong>
         </p>
+
+        <div class="navigation-wrapper iUp">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="#about" class="blog-button" onclick="showTab(event,'about')">关于我</a></li>
+                <li class="navigation__item"><a href="#skills" class="blog-button" onclick="showTab(event,'skills')">技能</a></li>
+                <li class="navigation__item"><a href="#projects" class="blog-button" onclick="showTab(event,'projects')">项目</a></li>
+                <li class="navigation__item"><a href="#navs" class="blog-button" onclick="showTab(event,'navs')">导航</a></li>
+              </ul>
+            </nav>
+          </div>
+
+          <div class="iUp">
+            <nav class="cover-navigation navigation--social">
+              <ul class="navigation">
+                <li class="navigation__item">
+                  <a href="https://github.com/wildfirelh" title="github" target="_blank">
+                    <i class="social iconfont icon-github"></i>
+                    <span class="label">GitHub</span>
+                  </a>
+                </li>
+                <li class="navigation__item">
+                  <a href="mailto:LH2878368528@163.com" title="email">
+                    <i class="social iconfont icon-email"></i>
+                    <span class="label">Email</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Tab content panels -->
+        <div class="iUp" style="margin-top:1.2rem;text-align:left;max-width:360px;margin-left:auto;margin-right:auto">
+          <div id="tab-about" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8;display:block">
+            就读于<strong style="color:#79b8ff">武汉职业技术大学光电信息工程技术专业</strong>，2025 年入学。对光学成像与智能算法交叉领域充满好奇。课余沉迷摄影，用镜头捕捉光影；同时是数码发烧友，热爱折腾硬件与新工具。
+          </div>
+          <div id="tab-skills" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8;display:none">
+            <div style="display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center">
+              <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">📷 摄影</span>
+              <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">🤖 AI 应用</span>
+              <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">💻 编程</span>
+              <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">🔬 光电技术</span>
+              <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">📱 数码评测</span>
+              <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">🎨 后期</span>
+            </div>
+          </div>
+          <div id="tab-projects" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8;display:none">
+            <p style="margin:.3rem 0">🧠 <strong>AI 图像创作实验</strong> — Stable Diffusion · ComfyUI</p>
+            <p style="margin:.3rem 0">📸 <strong>个人摄影作品集</strong> — 街头与风光摄影</p>
+            <p style="margin:.3rem 0">🤖 <strong>大模型学习笔记</strong> — LLM · Prompt Engineering</p>
+          </div>
+          <div id="tab-navs" class="tab-panel" style="font-size:.75rem;color:#8b949e;display:none">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem">
+              <a href="https://github.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">🐙 GitHub</a>
+              <a href="https://www.runoob.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">📘 菜鸟教程</a>
+              <a href="https://sspai.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">💡 少数派</a>
+              <a href="https://axutongxue.xyz/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">🔧 阿虚同学</a>
+              <a href="https://www.423down.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">⬇ 423Down</a>
+              <a href="https://nav.imyaigc.com/mobile" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">🤖 AI工具箱</a>
+              <a href="https://greasyfork.wwwnav.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">🧩 GreasyFork</a>
+              <a href="https://talent.shixizhi.huawei.com/portal/1365189427395223554?pageId=1608380789321072641&activeIndex=-1&sxz-lang=zh_CN" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">💼 华为实习</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-
-    <!-- Social -->
-    <div class="social-links">
-      <a href="https://github.com/wildfirelh" target="_blank" title="GitHub">🐙</a>
-      <a href="mailto:LH2878368528@163.com" title="Email">✉️</a>
-    </div>
-    <footer>© 2026 wildfire</footer>
+    <div class="panel-cover--overlay cover-slate"></div>
   </div>
-</div>
+</header>
 
+<script src="https://unpkg.com/dmego-home-page@latest/assets/js/main.js"></script>
+<script src="https://unpkg.com/dmego-home-page@latest/assets/js/theme-loader.js"></script>
 <script>
-// ═══ Tab switching ═══
-document.querySelectorAll('.nav-tabs button').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-tabs button').forEach(b=>b.classList.remove('on'));
-    btn.classList.add('on');
-    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
-  });
-});
-
-// ═══ Mobile scroll to content ═══
-document.getElementById('mbtn')?.addEventListener('click',()=>{
-  // On mobile, just scroll down so user sees content
-  window.scrollTo({top:window.innerHeight-60,behavior:'smooth'});
-});
+function showTab(e,name){
+  e.preventDefault();
+  document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+  document.getElementById('tab-'+name).style.display='block';
+}
 </script>
 
 </body>
