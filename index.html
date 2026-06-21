@@ -19,6 +19,7 @@
   body{background:#1a1a2e}
   .tab-panel{display:none}
   .tab-panel.active{display:block}
+  #panel{background-color:#1a1a2e;background-size:cover;background-position:center;transition:background-image 1s}
 </style>
 </head>
 <body>
@@ -91,7 +92,6 @@
           </div>
         </div>
 
-        <!-- Tab content -->
         <div class="iUp" style="margin-top:1.2rem;max-width:380px;margin-left:auto;margin-right:auto;text-align:left">
           <div id="tab-about" class="tab-panel active" style="font-size:.8rem;color:#8b949e;line-height:1.8">
             就读于<strong style="color:#79b8ff">武汉职业技术大学光电信息工程技术专业</strong>，2025 年入学。对光学成像与智能算法交叉领域充满好奇。课余沉迷摄影，用镜头捕捉光影；同时是数码发烧友，热爱折腾硬件与新工具。
@@ -131,22 +131,47 @@
   </div>
 </header>
 
-<!-- Inject Bing images data BEFORE main.js -->
+<!-- Fallback images in case Bing API fails -->
 <script>
-window.BING_IMAGES = ['/th?id=OHR.EggDad_ZH-CN6045387630_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.ArchedIceberg_ZH-CN2698040371_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.DragonBoatFestivalY26_ZH-CN5532138555_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.Saqsaywaman_ZH-CN2584038469_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.TremolaRoad_ZH-CN8810749250_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.SevenMileTurtle_ZH-CN4346512721_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.ParkEstd_ZH-CN3419035151_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.DuckPond_ZH-CN1683101997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'];
+window.BING_FALLBACK = ['/th?id=OHR.EggDad_ZH-CN6045387630_1920x1080.jpg','/th?id=OHR.DragonBoatFestivalY26_ZH-CN5532138555_1920x1080.jpg'];
 window.WAKATIME_CONFIG = { theme_name: 'productive', hours: 6, theme_display: '充实', date: new Date().toISOString().split('T')[0] };
 </script>
 <script src="https://unpkg.com/dmego-home-page@latest/assets/js/main.js"></script>
 <script src="https://unpkg.com/dmego-home-page@latest/assets/js/theme-loader.js"></script>
 <script>
-// Force bing background since assets/json/images.js doesn't exist locally
-(function(){
-  if(window.BING_IMAGES&&window.BING_IMAGES.length)getBingImages(window.BING_IMAGES);
-})();
+// Fetch fresh Bing wallpaper on every load (JSONP via callback)
+function fetchBingWallpaper(){
+  window.handleBingResponse = function(data){
+    if(data&&data.images&&data.images.length){
+      var urls = data.images.map(function(img){return img.url;});
+      var panel = document.getElementById('panel');
+      if(panel&&urls.length){
+        var url = 'https://www.bing.com'+urls[0];
+        panel.style.backgroundImage = 'url('+url+')';
+        // Store for session cycling to subsequent images
+        window.BING_IMAGES = urls;
+      }
+    }
+  };
+  var s = document.createElement('script');
+  s.src = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&callback=handleBingResponse';
+  s.onerror = function(){
+    // Fallback
+    if(window.BING_FALLBACK){
+      getBingImages(window.BING_FALLBACK);
+    }
+  };
+  document.head.appendChild(s);
+}
+
+// Start fetch after scripts load
+setTimeout(function(){
+  fetchBingWallpaper();
+}, 100);
 
 function switchTab(e,name){
   e.preventDefault();
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
   document.getElementById('tab-'+name).classList.add('active');
 }
 </script>
