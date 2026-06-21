@@ -15,6 +15,11 @@
 <link rel="stylesheet" href="https://unpkg.com/dmego-home-page@latest/assets/css/wakatime-theme.css">
 <link rel="apple-touch-icon" href="https://unpkg.com/dmego-home-page@latest/apple-touch-icon.png">
 <link rel="icon" href="https://unpkg.com/dmego-home-page@latest/favicon.ico">
+<style>
+  body{background:#1a1a2e}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+</style>
 </head>
 <body>
 
@@ -28,7 +33,6 @@
     <div class="panel-main__inner panel-inverted">
       <div class="panel-main__content">
 
-        <!-- Avatar -->
         <div class="ih-item circle effect right_to_left">
           <a href="#" title="" class="blog-button">
             <div class="img">
@@ -60,14 +64,13 @@
           <div>
             <nav class="cover-navigation cover-navigation--primary">
               <ul class="navigation">
-                <li class="navigation__item"><a href="#about" class="blog-button" onclick="showTab(event,'about')">关于我</a></li>
-                <li class="navigation__item"><a href="#skills" class="blog-button" onclick="showTab(event,'skills')">技能</a></li>
-                <li class="navigation__item"><a href="#projects" class="blog-button" onclick="showTab(event,'projects')">项目</a></li>
-                <li class="navigation__item"><a href="#navs" class="blog-button" onclick="showTab(event,'navs')">导航</a></li>
+                <li class="navigation__item"><a href="#about" class="blog-button" onclick="switchTab(event,'about')">关于我</a></li>
+                <li class="navigation__item"><a href="#skills" class="blog-button" onclick="switchTab(event,'skills')">技能</a></li>
+                <li class="navigation__item"><a href="#projects" class="blog-button" onclick="switchTab(event,'projects')">项目</a></li>
+                <li class="navigation__item"><a href="#navs" class="blog-button" onclick="switchTab(event,'navs')">导航</a></li>
               </ul>
             </nav>
           </div>
-
           <div class="iUp">
             <nav class="cover-navigation navigation--social">
               <ul class="navigation">
@@ -88,12 +91,12 @@
           </div>
         </div>
 
-        <!-- Tab content panels -->
-        <div class="iUp" style="margin-top:1.2rem;text-align:left;max-width:360px;margin-left:auto;margin-right:auto">
-          <div id="tab-about" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8;display:block">
+        <!-- Tab content -->
+        <div class="iUp" style="margin-top:1.2rem;max-width:380px;margin-left:auto;margin-right:auto;text-align:left">
+          <div id="tab-about" class="tab-panel active" style="font-size:.8rem;color:#8b949e;line-height:1.8">
             就读于<strong style="color:#79b8ff">武汉职业技术大学光电信息工程技术专业</strong>，2025 年入学。对光学成像与智能算法交叉领域充满好奇。课余沉迷摄影，用镜头捕捉光影；同时是数码发烧友，热爱折腾硬件与新工具。
           </div>
-          <div id="tab-skills" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8;display:none">
+          <div id="tab-skills" class="tab-panel" style="font-size:.8rem;color:#8b949e">
             <div style="display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center">
               <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">📷 摄影</span>
               <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">🤖 AI 应用</span>
@@ -103,12 +106,12 @@
               <span style="padding:.2rem .55rem;border:1px solid rgba(255,255,255,.1);border-radius:50px;font-size:.7rem">🎨 后期</span>
             </div>
           </div>
-          <div id="tab-projects" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8;display:none">
+          <div id="tab-projects" class="tab-panel" style="font-size:.8rem;color:#8b949e;line-height:1.8">
             <p style="margin:.3rem 0">🧠 <strong>AI 图像创作实验</strong> — Stable Diffusion · ComfyUI</p>
             <p style="margin:.3rem 0">📸 <strong>个人摄影作品集</strong> — 街头与风光摄影</p>
             <p style="margin:.3rem 0">🤖 <strong>大模型学习笔记</strong> — LLM · Prompt Engineering</p>
           </div>
-          <div id="tab-navs" class="tab-panel" style="font-size:.75rem;color:#8b949e;display:none">
+          <div id="tab-navs" class="tab-panel">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem">
               <a href="https://github.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">🐙 GitHub</a>
               <a href="https://www.runoob.com/" target="_blank" style="color:#8b949e;text-decoration:none;padding:.3rem;border:1px solid rgba(255,255,255,.06);border-radius:8px;text-align:center;font-size:.65rem">📘 菜鸟教程</a>
@@ -128,13 +131,23 @@
   </div>
 </header>
 
+<!-- Inject Bing images data BEFORE main.js -->
+<script>
+window.BING_IMAGES = ['/th?id=OHR.EggDad_ZH-CN6045387630_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.ArchedIceberg_ZH-CN2698040371_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.DragonBoatFestivalY26_ZH-CN5532138555_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.Saqsaywaman_ZH-CN2584038469_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.TremolaRoad_ZH-CN8810749250_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.SevenMileTurtle_ZH-CN4346512721_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.ParkEstd_ZH-CN3419035151_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp', '/th?id=OHR.DuckPond_ZH-CN1683101997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'];
+window.WAKATIME_CONFIG = { theme_name: 'productive', hours: 6, theme_display: '充实', date: new Date().toISOString().split('T')[0] };
+</script>
 <script src="https://unpkg.com/dmego-home-page@latest/assets/js/main.js"></script>
 <script src="https://unpkg.com/dmego-home-page@latest/assets/js/theme-loader.js"></script>
 <script>
-function showTab(e,name){
+// Force bing background since assets/json/images.js doesn't exist locally
+(function(){
+  if(window.BING_IMAGES&&window.BING_IMAGES.length)getBingImages(window.BING_IMAGES);
+})();
+
+function switchTab(e,name){
   e.preventDefault();
-  document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
-  document.getElementById('tab-'+name).style.display='block';
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
 }
 </script>
 
