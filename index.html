@@ -217,30 +217,7 @@ window.WAKATIME_CONFIG = { theme_name: 'productive', hours: 6, theme_display: '�
 
 // ═══ Fetch Bing wallpaper ═══
 function fetchBingWallpaper(){
-  window.handleBingResponse = function(data){
-    if(data&&data.images&&data.images.length){
-      var urls = data.images.map(function(img){return img.url;});
-      var panel = document.getElementById('panel');
-      if(panel&&urls.length){
-        var url = 'https://www.bing.com'+urls[0];
-        panel.style.backgroundImage = 'url('+url+')';
-        window.BING_IMAGES = urls;
-
-        // Show copyright in modal
-        var img = data.images[0];
-        var infoEl = document.getElementById('bingInfo');
-        if(infoEl&&img.copyright){
-          infoEl.innerHTML = '<strong>🖼 '+img.copyright+'</strong>';
-        }
-      }
-    }
-  };
-  var s = document.createElement('script');
-  s.src = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&callback=handleBingResponse';
-  document.head.appendChild(s);
-}
-
-setTimeout(fetchBingWallpaper, 100);
+  ;
 
 // ═══ Modal ═══
 (function(){
@@ -283,5 +260,22 @@ function switchTab(e,name){
 }
 </script>
 
-</body>
+<script>
+// Hardcoded Bing wallpapers (updated 2026-06-21)
+window.BING_IMAGES = ["/th?id=OHR.EggDad_JA-JP1066785458_1920x1080.jpg","/th?id=OHR.ArchedIceberg_JA-JP0865478817_1920x1080.jpg","/th?id=OHR.GrandPlace_JA-JP0571812680_1920x1080.jpg","/th?id=OHR.Saqsaywaman_JA-JP0282514779_1920x1080.jpg","/th?id=OHR.TremolaRoad_JA-JP0031183332_1920x1080.jpg","/th?id=OHR.SevenMileTurtle_JA-JP9577560353_1920x1080.jpg","/th?id=OHR.ParkEstd_JA-JP9205724491_1920x1080.jpg","/th?id=OHR.BadSunset_JA-JP5960860484_1920x1080.jpg"];
+
+(function applyBing(){
+  var idx = parseInt(sessionStorage.getItem('bing-idx'),10)||0;
+  var url = 'https://www.bing.com'+window.BING_IMAGES[idx%window.BING_IMAGES.length];
+  document.getElementById('panel').style.backgroundImage = 'url('+url+')';
+  sessionStorage.setItem('bing-idx', (idx+1)%window.BING_IMAGES.length);
+
+  // Show copyright in modal if bing info available
+  var cp = ['蛋爸','冰山拱门','布鲁塞尔大广场','萨克塞华曼','Tremola公路','七英里海龟','Est国家公园','日落'];
+  setTimeout(function(){
+    var el = document.getElementById('bingInfo');
+    if(el) el.innerHTML = '<strong>🖼 Bing 每日壁纸 #'+(idx%8+1)+'</strong>';
+  },500);
+})();
+</script></body>
 </html>
