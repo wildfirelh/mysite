@@ -17,9 +17,60 @@
 <link rel="icon" href="https://unpkg.com/dmego-home-page@latest/favicon.ico">
 <style>
   body{background:#1a1a2e}
-  .tab-panel{display:none}
-  .tab-panel.active{display:block}
+  .tab-panel{display:none}.tab-panel.active{display:block}
   #panel{background-color:#1a1a2e;background-size:cover;background-position:center;transition:background-image 1s}
+
+  /* ═══ Status button ═══ */
+  .status-btn{
+    position:fixed;bottom:1.2rem;right:1.2rem;z-index:200;
+    display:flex;align-items:center;gap:.5rem;
+    padding:.5rem 1rem;border-radius:50px;
+    background:rgba(20,22,28,.85);backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.1);
+    color:#c8d6e5;cursor:pointer;font-size:.7rem;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.25);
+  }
+  .status-btn:hover{border-color:rgba(99,158,255,.4);color:#79b8ff;transform:translateY(-2px)}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse-dot 2s ease-in-out infinite}
+  @keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 8px rgba(74,222,128,0)}}
+
+  /* ═══ Modal ═══ */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:300;display:none;
+    background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+    align-items:center;justify-content:center;
+  }
+  .modal-overlay.open{display:flex}
+  .modal-box{
+    background:rgba(26,30,38,.95);border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;padding:1.8rem;max-width:420px;width:90%;
+    color:#c8d6e5;position:relative;max-height:85vh;overflow-y:auto;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+  }
+  .modal-box h3{font-size:.9rem;color:#79b8ff;margin-bottom:.6rem;display:flex;align-items:center;gap:.35rem}
+  .modal-box .close-btn{
+    position:absolute;top:.8rem;right:1rem;background:none;border:none;
+    color:#8b949e;font-size:1.3rem;cursor:pointer;line-height:1;
+    transition:color .2s;
+  }
+  .modal-box .close-btn:hover{color:#fff}
+  .modal-box .info-row{font-size:.73rem;color:#8b949e;margin-bottom:.5rem;line-height:1.6}
+  .modal-box .info-row strong{color:#c8d6e5}
+  .modal-box .player-wrap{border-radius:12px;overflow:hidden;margin:.8rem 0}
+  .modal-box .tip-box{
+    background:rgba(99,158,255,.06);border:1px solid rgba(99,158,255,.12);
+    border-radius:12px;padding:.7rem;font-size:.7rem;color:#8b949e;
+    margin-top:.6rem;line-height:1.6;
+  }
+  .modal-box .tip-box .icon{font-size:1rem}
+
+  @media(max-width:640px){
+    .status-btn{font-size:.65rem;padding:.4rem .8rem}
+    .modal-box{padding:1.3rem;max-width:95%}
+  }
 </style>
 </head>
 <body>
@@ -131,15 +182,40 @@
   </div>
 </header>
 
-<!-- Fallback images in case Bing API fails -->
+<!-- ═══ Status button ═══ -->
+<button class="status-btn" id="statusBtn" title="今日状态">
+  <span class="status-dot"></span> 今日状态
+</button>
+
+<!-- ═══ Modal ═══ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <button class="close-btn" id="closeModal">&times;</button>
+    <h3>🌿 今日状态</h3>
+
+    <div class="info-row" id="bingInfo">壁纸加载中...</div>
+
+    <h3 style="margin-top:1rem">🎵 我的歌单</h3>
+    <div class="player-wrap">
+      <iframe id="musicPlayer" frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="86"
+        src="https://music.163.com/outchain/player?type=0&id=2993413230&auto=0&height=66">
+      </iframe>
+    </div>
+
+    <div class="tip-box" id="aiTip">
+      <span class="icon">💡</span> <span id="aiTipText">加载中...</span>
+    </div>
+  </div>
+</div>
+
 <script>
-window.BING_FALLBACK = ['/th?id=OHR.EggDad_ZH-CN6045387630_1920x1080.jpg','/th?id=OHR.DragonBoatFestivalY26_ZH-CN5532138555_1920x1080.jpg'];
 window.WAKATIME_CONFIG = { theme_name: 'productive', hours: 6, theme_display: '充实', date: new Date().toISOString().split('T')[0] };
 </script>
 <script src="https://unpkg.com/dmego-home-page@latest/assets/js/main.js"></script>
 <script src="https://unpkg.com/dmego-home-page@latest/assets/js/theme-loader.js"></script>
 <script>
-// Fetch fresh Bing wallpaper on every load (JSONP via callback)
+
+// ═══ Fetch Bing wallpaper ═══
 function fetchBingWallpaper(){
   window.handleBingResponse = function(data){
     if(data&&data.images&&data.images.length){
@@ -148,26 +224,57 @@ function fetchBingWallpaper(){
       if(panel&&urls.length){
         var url = 'https://www.bing.com'+urls[0];
         panel.style.backgroundImage = 'url('+url+')';
-        // Store for session cycling to subsequent images
         window.BING_IMAGES = urls;
+
+        // Show copyright in modal
+        var img = data.images[0];
+        var infoEl = document.getElementById('bingInfo');
+        if(infoEl&&img.copyright){
+          infoEl.innerHTML = '<strong>🖼 '+img.copyright+'</strong>';
+        }
       }
     }
   };
   var s = document.createElement('script');
   s.src = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&callback=handleBingResponse';
-  s.onerror = function(){
-    // Fallback
-    if(window.BING_FALLBACK){
-      getBingImages(window.BING_FALLBACK);
-    }
-  };
   document.head.appendChild(s);
 }
 
-// Start fetch after scripts load
-setTimeout(function(){
-  fetchBingWallpaper();
-}, 100);
+setTimeout(fetchBingWallpaper, 100);
+
+// ═══ Modal ═══
+(function(){
+  var btn = document.getElementById('statusBtn');
+  var overlay = document.getElementById('modalOverlay');
+  var close = document.getElementById('closeModal');
+
+  btn.addEventListener('click', function(){ overlay.classList.add('open'); });
+  close.addEventListener('click', function(){ overlay.classList.remove('open'); });
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.classList.remove('open'); });
+
+  // Stop music when closing
+  close.addEventListener('click', function(){
+    document.getElementById('musicPlayer').src = document.getElementById('musicPlayer').src;
+  });
+})();
+
+// ═══ Random AI tips ═══
+(function(){
+  var tips = [
+    '试试用 Stable Diffusion 的 ControlNet Canny 模式，把照片转成线稿再创作',
+    'ComfyUI 的节点工作流：PhotoMaker + IPAdapter 可以实现精确人脸控制',
+    '提示：用「golden hour, backlit, 85mm f/1.4」在 Midjourney 里模拟黄金时刻人像',
+    '摄影技巧：三角构图 + 引导线 = 画面纵深感的秘密',
+    '大模型推理时用 beam search 比 greedy 效果好，但更慢',
+    'Lightroom 中按住 Alt 拖动滑块可以看到过曝/欠曝区域',
+    '尝试用 whisper.cpp 本地跑语音转文字，速度快且免费',
+    'GPT-4o 的 Vision API 可以直接分析你的摄影构图',
+    'Adobe Firefly 的 Generative Fill 可以无缝移除照片杂物',
+    'LlamaIndex 搭建本地 RAG 知识库，文档问答不求人'
+  ];
+  var el = document.getElementById('aiTipText');
+  if(el){ el.textContent = tips[Math.floor(Math.random()*tips.length)]; }
+})();
 
 function switchTab(e,name){
   e.preventDefault();
