@@ -142,6 +142,33 @@ button { font: inherit; }
 .project-entry h3 { margin: 0; color: var(--paper); font-family: "Portfolio Serif", "Songti SC", SimSun, serif; font-size: clamp(1.15rem, 2vw, 1.45rem); font-weight: 600; line-height: 1.4; }
 .project-entry p { max-width: 34rem; margin: 0; color: var(--paper-soft); font-size: 0.93rem; line-height: 1.8; }
 
+.photon-game { margin-top: clamp(2.4rem, 5vw, 4.3rem); border-top: 1px solid var(--line-strong); }
+.game-readout { display: grid; grid-template-columns: repeat(3, minmax(6rem, 1fr)) auto; align-items: stretch; border-bottom: 1px solid var(--line); }
+.game-readout > div { display: grid; align-content: center; gap: 0.2rem; min-height: 5.4rem; padding: 0.8rem 1rem; border-right: 1px solid var(--line); }
+.game-readout span { color: var(--mist); font-size: 0.68rem; font-weight: 740; letter-spacing: 0.08em; }
+.game-readout strong { color: var(--paper); font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.game-start { --mag-x: 0px; --mag-y: 0px; min-width: 9rem; padding: 1rem 1.35rem; border: 0; border-left: 1px solid var(--line-strong); color: #06111d; background: var(--beam); cursor: pointer; font-weight: 760; transform: translate(var(--mag-x), var(--mag-y)); transition: color 180ms ease, background 180ms ease, transform 130ms ease-out; }
+.game-start:hover, .game-start:focus-visible { color: var(--paper); background: #24466f; outline: none; }
+.game-start:disabled { color: var(--mist); background: #111a28; cursor: wait; }
+
+.photon-field { --photon-x: 50%; --photon-y: 50%; position: relative; min-height: 400px; overflow: hidden; border-bottom: 1px solid var(--line-strong); background: radial-gradient(440px circle at var(--photon-x) var(--photon-y), rgba(121, 184, 255, 0.13), transparent 60%), radial-gradient(circle, rgba(121, 184, 255, 0.2) 1px, transparent 1.3px); background-size: auto, 34px 34px; isolation: isolate; }
+.photon-field::before, .photon-field::after { position: absolute; content: ""; pointer-events: none; }
+.photon-field::before { top: var(--photon-y); left: 0; width: var(--photon-x); height: 1px; background: linear-gradient(90deg, transparent, rgba(121, 184, 255, 0.7)); transform-origin: right; }
+.photon-field::after { top: 0; left: var(--photon-x); width: 1px; height: var(--photon-y); background: linear-gradient(transparent, rgba(121, 184, 255, 0.46)); }
+.photon-field.is-missed { box-shadow: inset 0 0 0 1px rgba(255, 112, 112, 0.55); }
+.field-reticle { position: absolute; top: 50%; left: 50%; width: 8rem; aspect-ratio: 1; border: 1px solid rgba(121, 184, 255, 0.13); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.field-reticle::before, .field-reticle::after { position: absolute; top: 50%; left: 50%; background: var(--line); content: ""; transform: translate(-50%, -50%); }
+.field-reticle::before { width: 11rem; height: 1px; }
+.field-reticle::after { width: 1px; height: 11rem; }
+.photon-target { position: absolute; top: var(--photon-y); left: var(--photon-x); z-index: 2; width: 3.2rem; aspect-ratio: 1; padding: 0; border: 1px solid rgba(210, 234, 255, 0.9); border-radius: 50%; background: rgba(121, 184, 255, 0.08); box-shadow: 0 0 24px rgba(121, 184, 255, 0.4); cursor: crosshair; transform: translate(-50%, -50%); transition: top 120ms cubic-bezier(.16,1,.3,1), left 120ms cubic-bezier(.16,1,.3,1), box-shadow 160ms ease; }
+.photon-target::before, .photon-target::after { position: absolute; inset: 22%; border: 1px solid rgba(219, 239, 255, 0.58); border-radius: 50%; content: ""; }
+.photon-target::after { inset: -34%; border-color: rgba(121, 184, 255, 0.25); }
+.photon-target span { position: absolute; inset: 39%; border-radius: 50%; background: #fff; box-shadow: 0 0 14px 5px rgba(121, 184, 255, 0.72); }
+.photon-target:hover, .photon-target:focus-visible { border-color: #fff; outline: 2px solid var(--beam); outline-offset: 5px; box-shadow: 0 0 38px rgba(121, 184, 255, 0.75); }
+.photon-target.is-hit { animation: photon-hit 180ms ease-out; }
+.game-message { position: absolute; right: 1rem; bottom: 1rem; max-width: 28rem; margin: 0; color: var(--mist); font-size: 0.75rem; line-height: 1.6; text-align: right; }
+.game-instructions { max-width: 66ch; margin: 1rem 0 0; color: var(--mist); font-size: 0.76rem; line-height: 1.7; }
+
 .resource-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 7vw, 7rem); margin-top: clamp(2.4rem, 5vw, 4.3rem); border-top: 1px solid var(--line-strong); }
 .resource-link { display: block; padding: 1rem 0; border-bottom: 1px solid var(--line); color: var(--paper-soft); font-size: 0.93rem; font-weight: 650; text-decoration: none; transition: color 180ms ease, transform 180ms ease; }
 .resource-link:hover, .resource-link:focus-visible { color: var(--beam); outline: none; transform: translateX(0.4rem); }
@@ -183,6 +210,7 @@ button { font: inherit; }
 @keyframes node-pulse { 50% { opacity: 0.34; transform: scale(2.2); } }
 @keyframes particle-drift { 50% { opacity: 0.25; transform: translate3d(1.2rem, -1.8rem, 0) scale(0.6); } }
 @keyframes scan-line { 0%, 100% { transform: translateX(-120%); } 50% { transform: translateX(240%); } }
+@keyframes photon-hit { 50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.8); filter: blur(2px); } }
 
 @media (max-width: 760px) {
   .site-shell { padding: 0 1rem 6rem; }
@@ -202,6 +230,11 @@ button { font: inherit; }
   .skill-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .skill-chip:nth-child(3n) { border-right: 1px solid var(--line); }
   .skill-chip:nth-child(2n) { border-right: 0; }
+  .game-readout { grid-template-columns: repeat(3, 1fr); }
+  .game-readout > div { min-width: 0; padding: 0.75rem 0.65rem; }
+  .game-start { grid-column: 1 / -1; min-height: 3.4rem; border-top: 1px solid var(--line-strong); border-left: 0; }
+  .photon-field { min-height: 330px; }
+  .game-message { max-width: 15rem; }
   .resource-grid { grid-template-columns: 1fr; }
   .social-links { align-items: flex-start; flex-direction: column; }
   .status-button { position: static; display: block; width: fit-content; margin: -3.3rem 1rem 2.5rem auto; }

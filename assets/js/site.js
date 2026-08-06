@@ -169,6 +169,111 @@ function setupMagneticControls() {
   });
 }
 
+function setupPhotonGame() {
+  const field = document.querySelector("#photon-field");
+  const target = document.querySelector("#photon-target");
+  const startButton = document.querySelector("#game-start");
+  const scoreNode = document.querySelector("#game-score");
+  const comboNode = document.querySelector("#game-combo");
+  const timeNode = document.querySelector("#game-time");
+  const message = document.querySelector("#game-message");
+  if (!field || !target || !startButton || !scoreNode || !comboNode || !timeNode || !message) return;
+
+  const duration = 20000;
+  let score = 0;
+  let combo = 0;
+  let running = false;
+  let deadline = 0;
+  let photonShownAt = 0;
+  let clock = 0;
+  let highScore = 0;
+
+  try {
+    highScore = Number.parseInt(localStorage.getItem("photon-high-score"), 10) || 0;
+  } catch (error) {
+    highScore = 0;
+  }
+
+  const updateReadout = () => {
+    scoreNode.textContent = String(score);
+    comboNode.textContent = String(combo);
+  };
+
+  const placePhoton = () => {
+    const x = 9 + Math.random() * 82;
+    const y = 13 + Math.random() * 72;
+    field.style.setProperty("--photon-x", `${x}%`);
+    field.style.setProperty("--photon-y", `${y}%`);
+    photonShownAt = performance.now();
+  };
+
+  const finishGame = () => {
+    running = false;
+    window.clearInterval(clock);
+    target.hidden = true;
+    field.classList.remove("is-running");
+    startButton.disabled = false;
+    startButton.textContent = "再玩一次";
+
+    const isRecord = score > highScore;
+    if (isRecord) {
+      highScore = score;
+      try {
+        localStorage.setItem("photon-high-score", String(highScore));
+      } catch (error) {
+        // The game still works when private browsing blocks storage.
+      }
+    }
+    message.textContent = isRecord ? `校准完成：${score} 分，新纪录。` : `校准完成：${score} 分，当前最高 ${highScore} 分。`;
+  };
+
+  const startGame = () => {
+    score = 0;
+    combo = 0;
+    running = true;
+    deadline = performance.now() + duration;
+    updateReadout();
+    timeNode.textContent = "20.0";
+    startButton.disabled = true;
+    startButton.textContent = "校准中";
+    target.hidden = false;
+    field.classList.add("is-running");
+    message.textContent = highScore ? `本机最高 ${highScore} 分。保持连击。` : "光子已进入观测场。";
+    placePhoton();
+    target.focus({ preventScroll: true });
+
+    window.clearInterval(clock);
+    clock = window.setInterval(() => {
+      const remaining = Math.max(0, deadline - performance.now());
+      timeNode.textContent = (remaining / 1000).toFixed(1);
+      if (remaining <= 0) finishGame();
+    }, 100);
+  };
+
+  target.addEventListener("click", (event) => {
+    if (!running) return;
+    event.stopPropagation();
+    const reaction = performance.now() - photonShownAt;
+    combo += 1;
+    score += 100 + combo * 12 + Math.max(0, 100 - Math.floor(reaction / 10));
+    updateReadout();
+    target.classList.remove("is-hit");
+    void target.offsetWidth;
+    target.classList.add("is-hit");
+    placePhoton();
+  });
+
+  field.addEventListener("pointerdown", (event) => {
+    if (!running || event.target !== field) return;
+    combo = 0;
+    updateReadout();
+    field.classList.add("is-missed");
+    window.setTimeout(() => field.classList.remove("is-missed"), 180);
+  });
+
+  startButton.addEventListener("click", startGame);
+}
+
 function setTip() {
   const tip = document.querySelector("#daily-tip");
   if (tip) tip.textContent = `灵感便签：${tips[Math.floor(Math.random() * tips.length)]}`;
@@ -181,4 +286,5 @@ setupScrollReveal();
 setupActiveNavigation();
 setupPointerFields();
 setupMagneticControls();
+setupPhotonGame();
 setTip();

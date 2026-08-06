@@ -59,6 +59,7 @@
       <a href="#about">关于</a>
       <a href="#skills">关注方向</a>
       <a href="#projects">项目</a>
+      <a href="#photon-game">光子游戏</a>
       <a href="#resources">资源</a>
     </nav>
 
@@ -105,6 +106,27 @@
         </div>
       </section>
 
+      <section id="photon-game" class="content-section" aria-labelledby="photon-game-title" data-reveal>
+        <div class="section-heading">
+          <h2 id="photon-game-title">捕捉一束光。</h2>
+          <p>在 20 秒内捕捉尽可能多的光子。反应越快、连续命中越多，得分越高。</p>
+        </div>
+        <div class="photon-game">
+          <div class="game-readout" aria-label="游戏数据">
+            <div><span>得分</span><strong id="game-score">0</strong></div>
+            <div><span>连击</span><strong id="game-combo">0</strong></div>
+            <div><span>剩余</span><strong id="game-time">20.0</strong></div>
+            <button class="game-start magnetic" id="game-start" type="button">开始校准</button>
+          </div>
+          <div class="photon-field" id="photon-field" aria-describedby="game-instructions">
+            <div class="field-reticle" aria-hidden="true"></div>
+            <button class="photon-target" id="photon-target" type="button" aria-label="捕捉光子" hidden><span></span></button>
+            <p class="game-message" id="game-message" aria-live="polite">启动校准后，光子会随机出现在观测场中。</p>
+          </div>
+          <p class="game-instructions" id="game-instructions">鼠标或触摸：直接捕捉光点。键盘：光点出现后按 Enter 或空格。最高分只保存在当前浏览器中。</p>
+        </div>
+      </section>
+
       <section id="resources" class="content-section" aria-labelledby="resources-title" data-reveal>
         <div class="section-heading">
           <h2 id="resources-title">常用的入口。</h2>
@@ -118,7 +140,6 @@
           <a class="resource-link" href="https://www.423down.com/" target="_blank" rel="noreferrer">423Down</a>
           <a class="resource-link" href="https://nav.imyaigc.com/mobile" target="_blank" rel="noreferrer">AI 工具箱</a>
           <a class="resource-link" href="https://greasyfork.wwwnav.com/" target="_blank" rel="noreferrer">GreasyFork</a>
-          <a class="resource-link" href="https://talent.shixizhi.huawei.com/portal/1365189427395223554?pageId=1608380789321072641&activeIndex=-1&sxz-lang=zh_CN" target="_blank" rel="noreferrer">华为实习</a>
         </div>
       </section>
     </div>
