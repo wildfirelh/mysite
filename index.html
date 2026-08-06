@@ -3,92 +3,143 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="wildfire 的个人主页：摄影、光电技术与 AI 应用。">
-  <meta name="theme-color" content="#101725">
-  <title>wildfire · 个人主页</title>
-  <link rel="icon" href="https://unpkg.com/dmego-home-page@latest/favicon.ico">
+  <meta name="description" content="摄影、光电技术与 AI 应用的个人主页。">
+  <meta name="theme-color" content="#080b12">
+  <title>光与像之间 · 个人主页</title>
   <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-  <main class="site-shell" id="site-shell">
-    <section class="site-card" aria-labelledby="site-title">
-      <header class="identity">
-        <img class="avatar" src="https://unpkg.com/dmego-home-page@latest/assets/img/logo3.jpg" alt="wildfire 的头像">
-        <p class="eyebrow">保持好奇，保持热爱</p>
-        <h1 id="site-title">wildfire</h1>
-        <p class="subtitle">摄影与光学的交汇处 · 数码与 AI 的探索者</p>
-        <p class="description">武汉职业技术大学 · 光电信息工程技术 · 2025 级<br>自学 AI，探索大模型与计算机视觉</p>
-      </header>
-
-      <nav class="section-nav" aria-label="页面导航">
-        <a href="#about">关于我</a>
-        <a href="#skills">技能</a>
-        <a href="#projects">项目</a>
-        <a href="#resources">导航</a>
-      </nav>
-
-      <div class="content-sections">
-      <section id="about" class="content-section" aria-labelledby="about-title">
-        <h2 id="about-title">关于我</h2>
-        <p class="panel-copy">就读于<strong>武汉职业技术大学光电信息工程技术专业</strong>，2025 年入学。对光学成像与智能算法交叉领域充满好奇。课余喜欢摄影，用镜头捕捉光影；同时也是数码爱好者，喜欢研究硬件与新工具。</p>
-      </section>
-
-      <section id="skills" class="content-section" aria-labelledby="skills-title">
-        <h2 id="skills-title">技能</h2>
-        <div class="skill-list" aria-label="技能标签">
-          <button class="skill-chip" type="button" data-skill="photography" aria-pressed="false">📷 摄影</button>
-          <button class="skill-chip" type="button" data-skill="ai" aria-pressed="false">🤖 AI 应用</button>
-          <button class="skill-chip" type="button" data-skill="coding" aria-pressed="false">💻 编程</button>
-          <button class="skill-chip" type="button" data-skill="optoelectronics" aria-pressed="false">🔬 光电技术</button>
-          <button class="skill-chip" type="button" data-skill="digital" aria-pressed="false">📱 数码评测</button>
-          <button class="skill-chip" type="button" data-skill="post" aria-pressed="false">🎨 后期</button>
-        </div>
-        <p class="skill-detail" id="skill-detail" aria-live="polite">点击一个技能标签，查看我在这个方向上的关注点。</p>
-      </section>
-
-      <section id="projects" class="content-section" aria-labelledby="projects-title">
-        <h2 id="projects-title">项目</h2>
-        <div class="project-list">
-          <article class="project-card"><h3>🧠 AI 图像创作实验</h3><p>Stable Diffusion · ComfyUI。把想法拆成可复现的图像工作流。</p></article>
-          <article class="project-card"><h3>📸 个人摄影作品集</h3><p>街头与风光摄影。作品和拍摄故事会在这里逐步补充。</p></article>
-          <article class="project-card"><h3>🤖 大模型学习笔记</h3><p>LLM · Prompt Engineering。记录学习过程与实用实验。</p></article>
-        </div>
-      </section>
-
-      <section id="resources" class="content-section" aria-labelledby="resources-title">
-        <h2 id="resources-title">导航</h2>
-        <div class="resource-grid">
-          <a class="resource-link" href="https://github.com/" target="_blank" rel="noreferrer">🐙 GitHub</a>
-          <a class="resource-link" href="https://www.runoob.com/" target="_blank" rel="noreferrer">📘 菜鸟教程</a>
-          <a class="resource-link" href="https://sspai.com/" target="_blank" rel="noreferrer">💡 少数派</a>
-          <a class="resource-link" href="https://axutongxue.xyz/" target="_blank" rel="noreferrer">🔧 阿虚同学</a>
-          <a class="resource-link" href="https://www.423down.com/" target="_blank" rel="noreferrer">⬇ 423Down</a>
-          <a class="resource-link" href="https://nav.imyaigc.com/mobile" target="_blank" rel="noreferrer">🤖 AI 工具箱</a>
-          <a class="resource-link" href="https://greasyfork.wwwnav.com/" target="_blank" rel="noreferrer">🧩 GreasyFork</a>
-          <a class="resource-link" href="https://talent.shixizhi.huawei.com/portal/1365189427395223554?pageId=1608380789321072641&activeIndex=-1&sxz-lang=zh_CN" target="_blank" rel="noreferrer">💼 华为实习</a>
-        </div>
-      </section>
-
+  <!--
+  THESIS: A personal homepage behaves like an optical field: curiosity enters, crosses disciplines, and leaves a visible trace instead of sitting inside a profile card.
+  OWN-WORLD: Pure-code midnight canvas, responsive spotlight, SVG beam paths, precise rules, cobalt light, and restrained kinetic typography; no raster or AI-generated background imagery.
+  STORY: Visitors meet photography, optoelectronics, and AI as one connected practice, then scroll through truthful profile facts, interests, projects, and resources.
+  FIRST VIEWPORT: Large Chinese title and compact introduction sit inside an interactive optical diagram whose glow, lens, paths, and particles react gently to the pointer.
+  FORM: MotionSites pacing, React Bits text reveal, Uiverse micro-interactions, Anime-style timelines, and Aceternity-inspired beams translated into framework-free HTML/CSS/JS.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review and verified responsive behavior.
+  -->
+  <main class="site-shell">
+    <section class="hero" id="top" aria-labelledby="site-title">
+      <div class="motion-stage" aria-hidden="true">
+        <div class="stage-grid"></div>
+        <div class="stage-spotlight"></div>
+        <svg class="beam-map" viewBox="0 0 1200 720" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="beam-gradient" x1="0" x2="1">
+              <stop offset="0" stop-color="#66a6ff" stop-opacity="0"/>
+              <stop offset="0.45" stop-color="#a8d5ff" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#6d5cff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path class="beam beam-main" d="M-80 560 C220 500 330 215 595 315 S930 470 1290 110"/>
+          <path class="beam beam-secondary" d="M-40 140 C290 230 420 550 720 435 S1020 185 1260 350"/>
+          <path class="beam beam-fine" d="M80 650 Q530 140 1120 590"/>
+          <circle class="beam-node node-a" cx="594" cy="315" r="7"/>
+          <circle class="beam-node node-b" cx="721" cy="435" r="5"/>
+        </svg>
+        <div class="lens" aria-hidden="true"><span></span></div>
+        <span class="particle particle-a"></span>
+        <span class="particle particle-b"></span>
+        <span class="particle particle-c"></span>
+        <span class="particle particle-d"></span>
+        <div class="stage-axis axis-x"></div>
+        <div class="stage-axis axis-y"></div>
       </div>
 
-      <footer class="social-links">
-        <a href="https://github.com/wildfirelh" target="_blank" rel="noreferrer">GitHub ↗</a>
-        <a href="mailto:LH2878368528@163.com">Email ↗</a>
-      </footer>
+      <div class="hero-copy">
+        <h1 id="site-title" aria-label="光与像之间"><span aria-hidden="true">光与像</span><span aria-hidden="true">之间</span></h1>
+        <p class="hero-context">摄影 · 光电技术 · AI 应用</p>
+        <p class="hero-lede">用镜头观察，用技术拆解；把不断学习的过程，留在每一次创作和实验里。</p>
+        <a class="hero-action magnetic" href="#projects">浏览正在进行的探索</a>
+      </div>
+
+      <div class="hero-foot" aria-hidden="true"><span>SCROLL TO EXPLORE</span><i></i></div>
     </section>
+
+    <nav class="section-nav" aria-label="页面导航">
+      <a href="#about">关于</a>
+      <a href="#skills">关注方向</a>
+      <a href="#projects">项目</a>
+      <a href="#resources">资源</a>
+    </nav>
+
+    <div class="content-sections">
+      <section id="about" class="content-section about-section" aria-labelledby="about-title" data-reveal>
+        <div class="section-heading">
+          <h2 id="about-title">观察，是一切开始的地方。</h2>
+        </div>
+        <div class="about-grid">
+          <p class="panel-copy">就读于 <strong>武汉职业技术大学光电信息工程技术专业</strong>，2025 年入学。对光学成像与智能算法交叉领域充满好奇。课余喜欢摄影，用镜头捕捉光影；同时也是数码爱好者，喜欢研究硬件与新工具。</p>
+          <dl class="profile-facts">
+            <div><dt>学习</dt><dd>光电信息工程技术</dd></div>
+            <div><dt>入学</dt><dd>2025</dd></div>
+            <div><dt>正在探索</dt><dd>大模型与计算机视觉</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section id="skills" class="content-section" aria-labelledby="skills-title" data-reveal>
+        <div class="section-heading">
+          <h2 id="skills-title">把好奇心落到具体的方向上。</h2>
+          <p>选择一个方向，查看我目前的关注点。</p>
+        </div>
+        <div class="skill-list" aria-label="技能标签">
+          <button class="skill-chip" type="button" data-skill="photography" aria-pressed="false">摄影</button>
+          <button class="skill-chip" type="button" data-skill="ai" aria-pressed="false">AI 应用</button>
+          <button class="skill-chip" type="button" data-skill="coding" aria-pressed="false">编程</button>
+          <button class="skill-chip" type="button" data-skill="optoelectronics" aria-pressed="false">光电技术</button>
+          <button class="skill-chip" type="button" data-skill="digital" aria-pressed="false">数码评测</button>
+          <button class="skill-chip" type="button" data-skill="post" aria-pressed="false">后期</button>
+        </div>
+        <p class="skill-detail" id="skill-detail" aria-live="polite">选择一个方向，查看我在这个方向上的关注点。</p>
+      </section>
+
+      <section id="projects" class="content-section" aria-labelledby="projects-title" data-reveal>
+        <div class="section-heading">
+          <h2 id="projects-title">正在进行的探索。</h2>
+          <p>这里记录尚在生长中的实践，而不是完成后的结论。</p>
+        </div>
+        <div class="project-list">
+          <article class="project-entry pointer-field"><h3>AI 图像创作实验</h3><p>Stable Diffusion · ComfyUI。把想法拆成可复现的图像工作流。</p></article>
+          <article class="project-entry pointer-field"><h3>个人摄影作品集</h3><p>街头与风光摄影。作品和拍摄故事会在这里逐步补充。</p></article>
+          <article class="project-entry pointer-field"><h3>大模型学习笔记</h3><p>LLM · Prompt Engineering。记录学习过程与实用实验。</p></article>
+        </div>
+      </section>
+
+      <section id="resources" class="content-section" aria-labelledby="resources-title" data-reveal>
+        <div class="section-heading">
+          <h2 id="resources-title">常用的入口。</h2>
+          <p>学习、创作和寻找机会时，经常会回到这些地方。</p>
+        </div>
+        <div class="resource-grid">
+          <a class="resource-link" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="resource-link" href="https://www.runoob.com/" target="_blank" rel="noreferrer">菜鸟教程</a>
+          <a class="resource-link" href="https://sspai.com/" target="_blank" rel="noreferrer">少数派</a>
+          <a class="resource-link" href="https://axutongxue.xyz/" target="_blank" rel="noreferrer">阿虚同学</a>
+          <a class="resource-link" href="https://www.423down.com/" target="_blank" rel="noreferrer">423Down</a>
+          <a class="resource-link" href="https://nav.imyaigc.com/mobile" target="_blank" rel="noreferrer">AI 工具箱</a>
+          <a class="resource-link" href="https://greasyfork.wwwnav.com/" target="_blank" rel="noreferrer">GreasyFork</a>
+          <a class="resource-link" href="https://talent.shixizhi.huawei.com/portal/1365189427395223554?pageId=1608380789321072641&activeIndex=-1&sxz-lang=zh_CN" target="_blank" rel="noreferrer">华为实习</a>
+        </div>
+      </section>
+    </div>
+
+    <footer class="social-links" data-reveal>
+      <p>保持好奇，保持热爱。</p>
+      <div><a href="https://github.com/wildfirelh" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:LH2878368528@163.com">Email</a></div>
+    </footer>
   </main>
 
-  <button class="status-button" id="status-button" type="button" aria-haspopup="dialog"><span class="status-dot" aria-hidden="true"></span>今日状态</button>
+  <button class="status-button magnetic" id="status-button" type="button" aria-haspopup="dialog" aria-controls="status-dialog" aria-expanded="false">打开今日状态</button>
 
   <dialog class="status-dialog" id="status-dialog" aria-labelledby="status-title">
     <div class="dialog-content">
-      <button class="dialog-close" id="close-status" type="button" aria-label="关闭状态窗口">×</button>
-      <h2 id="status-title">🌿 今日状态</h2>
-      <p id="wallpaper-info">壁纸加载中…</p>
-      <h3>🎵 我的歌单</h3>
+      <button class="dialog-close" id="close-status" type="button" aria-label="关闭状态窗口">关闭</button>
+      <h2 id="status-title">今日状态</h2>
+      <p class="status-copy">光影、声响和持续学习，构成今天的工作台。</p>
+      <h3>我的歌单</h3>
       <iframe class="music-player" title="网易云音乐歌单，可在播放器内切换上一首或下一首" src="https://music.163.com/outchain/player?type=0&id=2993413230&auto=0&height=66"></iframe>
       <p class="music-note">可在播放器内使用上一首、播放和下一首；若控件没有加载，可打开完整歌单。</p>
-      <a class="playlist-link" href="https://music.163.com/playlist?id=2993413230" target="_blank" rel="noreferrer">打开完整歌单 ↗</a>
+      <a class="playlist-link" href="https://music.163.com/playlist?id=2993413230" target="_blank" rel="noreferrer">打开完整歌单</a>
       <p class="tip" id="daily-tip">加载中…</p>
     </div>
   </dialog>
