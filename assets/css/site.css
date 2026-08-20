@@ -277,7 +277,10 @@ a { text-underline-offset: 0.26em; }
 .dialog-label { margin: 0 0 2.5rem; color: var(--acid); font-size: 0.58rem; font-weight: 820; letter-spacing: 0.15em; }
 .dialog-content h2 { margin: 0; font-family: "Portfolio Serif", serif; font-size: 2.15rem; font-weight: 600; }
 .status-copy { max-width: 25rem; margin: 1rem 0 0; color: #b7b9b3; font-size: 0.86rem; line-height: 1.8; }
-.music-player { width: 100%; height: 96px; margin-top: 1.7rem; border: 0; background: #090a0b; }
+.music-player-shell { position: relative; height: 96px; margin-top: 1.7rem; overflow: hidden; background: #090a0b; }
+.music-player { display: block; width: 100%; height: 96px; border: 0; background: #090a0b; }
+.music-player-title { position: absolute; z-index: 1; top: 10px; right: 10px; left: 76px; display: flex; height: 42px; align-items: center; gap: 0.52rem; box-sizing: border-box; padding: 0 10px; color: #252622; background: #fff; font-size: 13px; font-weight: 700; line-height: 1; pointer-events: none; }
+.music-player-title::before { width: 0.45rem; height: 0.45rem; flex: 0 0 auto; border-radius: 50%; background: var(--acid); box-shadow: 0 0 0 1px rgba(17, 17, 15, 0.16); content: ""; }
 .music-note { margin: 0.6rem 0 0; color: #979a94; font-size: 0.72rem; line-height: 1.65; }
 .playlist-link { display: inline-block; margin-top: 0.9rem; padding-bottom: 0.2rem; border-bottom: 1px solid #797c75; color: var(--acid); font-size: 0.76rem; text-decoration: none; }
 .playlist-link:hover, .playlist-link:focus-visible { border-color: var(--light); color: var(--light); outline: none; }

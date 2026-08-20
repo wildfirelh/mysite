@@ -141,14 +141,17 @@
     <span>© <span id="year"></span> LH</span>
   </footer>
 
-  <button class="status-button" id="status-button" type="button" aria-haspopup="dialog" aria-controls="status-dialog" aria-expanded="false"><i aria-hidden="true"></i><span>今日歌单</span></button>
+  <button class="status-button" id="status-button" type="button" aria-haspopup="dialog" aria-controls="status-dialog" aria-expanded="false"><i aria-hidden="true"></i><span>一起听</span></button>
   <dialog class="status-dialog" id="status-dialog" aria-labelledby="status-title">
     <div class="dialog-content">
       <button class="dialog-close" id="close-status" type="button">关闭</button>
-      <p class="dialog-label">NOW PLAYING</p><h2 id="status-title">今日歌单</h2>
+      <p class="dialog-label">NOW PLAYING</p><h2 id="status-title">精选歌单</h2>
       <p class="status-copy">拍照、整理和写代码时，会循环播放的声音。</p>
-      <iframe class="music-player" title="网易云音乐歌单，可在播放器内切换上一首或下一首" src="https://music.163.com/outchain/player?type=0&id=2993413230&auto=0&height=66"></iframe>
-      <p class="music-note">播放器支持上一首、播放和下一首。若没有加载，可打开完整歌单。</p>
+      <div class="music-player-shell">
+        <iframe class="music-player" title="精选歌单播放器" src="https://music.163.com/outchain/player?type=0&id=2993413230&auto=0&height=66"></iframe>
+        <span class="music-player-title" aria-hidden="true">精选歌单</span>
+      </div>
+      <p class="music-note">点击封面按钮开始播放；如需浏览或切换歌曲，可打开完整歌单。</p>
       <a class="playlist-link" href="https://music.163.com/playlist?id=2993413230" target="_blank" rel="noreferrer">在网易云音乐打开</a>
       <section class="quote-panel" aria-labelledby="quote-title">
         <div class="quote-heading">
