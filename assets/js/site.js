@@ -1,129 +1,94 @@
-const skills = {
-  photography: {
-    label: "摄影",
-    description: "关注街头与风光摄影，用镜头记录光影、空间和日常瞬间。"
-  },
-  ai: {
-    label: "AI 应用",
-    description: "正在探索 Stable Diffusion、ComfyUI 等图像创作工作流，以及 AI 工具在学习和创作中的应用。"
-  },
-  coding: {
-    label: "编程",
-    description: "持续学习编程基础，并把它作为连接想法、自动化工具和 AI 应用的能力。"
-  },
-  optoelectronics: {
-    label: "光电技术",
-    description: "就读光电信息工程技术专业，关注光学成像与智能算法的交叉方向。"
-  },
-  digital: {
-    label: "数码评测",
-    description: "喜欢研究硬件、新设备与实用软件工具，重视真实使用场景中的体验。"
-  },
-  post: {
-    label: "后期",
-    description: "学习图像后期与色彩表达，让照片和 AI 创作更接近想要传达的氛围。"
-  }
-};
-
 const tips = [
-  "试试用 Stable Diffusion 的 ControlNet Canny 模式，把照片转成线稿再创作。",
-  "ComfyUI 的节点工作流可以把复杂的图像创作步骤拆得更清晰。",
-  "三角构图加引导线，能让画面更有纵深感。",
-  "Lightroom 中按住 Alt 拖动滑块，可以更直观地查看过曝和欠曝区域。",
-  "尝试用 whisper.cpp 在本地完成语音转文字，速度快且无需上传素材。",
-  "用视觉模型分析照片前，先明确希望它评价构图、色彩还是主体表达。"
+  "灵感便签：试着在同一个地点停留十分钟，让光线决定下一张照片。",
+  "灵感便签：先寻找画面里的明暗关系，再决定主体放在哪里。",
+  "灵感便签：阴天不是没有光，而是光变得更柔软了。",
+  "灵感便签：拍完别急着离开，回头往往会遇到第二个画面。",
+  "灵感便签：整理照片时，连续三张能够讲清楚的故事，比十张相似照片更有力量。"
 ];
 
-function setupSkills() {
-  const detail = document.querySelector("#skill-detail");
-  const skillButtons = document.querySelectorAll(".skill-chip");
+function setupHeaderAndParallax() {
+  const header = document.querySelector(".site-header");
+  const hero = document.querySelector(".hero");
+  const layers = [...document.querySelectorAll("[data-depth]")];
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let ticking = false;
 
-  skillButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const skill = skills[button.dataset.skill];
-      if (!skill || !detail) return;
+  const render = () => {
+    const y = window.scrollY;
+    header?.classList.toggle("is-compact", y > 48);
 
-      skillButtons.forEach((item) => {
-        const selected = item === button;
-        item.classList.toggle("is-selected", selected);
-        item.setAttribute("aria-pressed", String(selected));
+    if (!reducedMotion && hero && y < hero.offsetHeight * 1.25) {
+      layers.forEach((layer) => {
+        const depth = Number(layer.dataset.depth) || 0;
+        layer.style.setProperty("--parallax-y", `${Math.min(110, y * depth)}px`);
       });
-
-      detail.replaceChildren();
-      const label = document.createElement("strong");
-      label.textContent = skill.label;
-      detail.append(label, document.createTextNode(`：${skill.description}`));
-    });
-  });
-}
-
-function setupStatusDialog() {
-  const dialog = document.querySelector("#status-dialog");
-  const openButton = document.querySelector("#status-button");
-  const closeButton = document.querySelector("#close-status");
-  if (!dialog || !openButton || !closeButton) return;
-
-  const setOpenState = (open) => {
-    openButton.setAttribute("aria-expanded", String(open));
-    openButton.textContent = open ? "收起今日状态" : "打开今日状态";
+    }
+    ticking = false;
   };
 
-  openButton.addEventListener("click", () => {
-    if (dialog.open) dialog.close();
-    else {
-      dialog.show();
-      setOpenState(true);
-    }
-  });
-  closeButton.addEventListener("click", () => dialog.close());
-  dialog.addEventListener("close", () => setOpenState(false));
-  document.addEventListener("pointerdown", (event) => {
-    if (dialog.open && !dialog.contains(event.target) && event.target !== openButton) dialog.close();
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && dialog.open) dialog.close();
-  });
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(render);
+  }, { passive: true });
+  render();
 }
 
-function setupHeroMotion() {
-  const hero = document.querySelector(".hero");
-  if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+function setupPhotoReveal() {
+  const targets = document.querySelectorAll("[data-reveal-photo]");
+  if (!targets.length || window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 640px)").matches) return;
 
-  let frame = 0;
-  hero.addEventListener("pointermove", (event) => {
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() => {
-      const rect = hero.getBoundingClientRect();
-      const x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
-      const y = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
-      hero.style.setProperty("--pointer-x", `${x * 100}%`);
-      hero.style.setProperty("--pointer-y", `${y * 100}%`);
-      hero.style.setProperty("--tilt-x", `${(0.5 - y) * 2.5}deg`);
-      hero.style.setProperty("--tilt-y", `${(x - 0.5) * 3.5}deg`);
-      hero.style.setProperty("--lens-x", `${(x - 0.5) * 14}px`);
-      hero.style.setProperty("--lens-y", `${(y - 0.5) * 12}px`);
-    });
-  });
-}
-
-function setupScrollReveal() {
-  const targets = document.querySelectorAll("[data-reveal]");
-  if (!targets.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  document.documentElement.classList.add("motion-enabled");
+  document.documentElement.classList.add("motion-ready");
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       entry.target.classList.add("is-visible");
       observer.unobserve(entry.target);
     });
-  }, { threshold: 0.12, rootMargin: "0px 0px -8%" });
+  }, { threshold: 0.08, rootMargin: "0px 0px -6%" });
 
   targets.forEach((target) => observer.observe(target));
 }
 
+function setupStatusDialog() {
+  const dialog = document.querySelector("#status-dialog");
+  const openButton = document.querySelector("#status-button");
+  const navButton = document.querySelector("#nav-playlist");
+  const closeButton = document.querySelector("#close-status");
+  if (!dialog || !openButton || !closeButton) return;
+  let lastOpener = openButton;
+
+  const setOpenState = (open) => {
+    openButton.setAttribute("aria-expanded", String(open));
+    navButton?.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("dialog-open", open);
+  };
+
+  const openDialog = (opener = openButton) => {
+    lastOpener = opener;
+    if (!dialog.open) dialog.showModal();
+    setOpenState(true);
+    closeButton.focus({ preventScroll: true });
+  };
+
+  const closeDialog = () => {
+    if (dialog.open) dialog.close();
+  };
+
+  openButton.addEventListener("click", () => dialog.open ? closeDialog() : openDialog(openButton));
+  navButton?.addEventListener("click", () => openDialog(navButton));
+  closeButton.addEventListener("click", closeDialog);
+  dialog.addEventListener("close", () => {
+    setOpenState(false);
+    lastOpener?.focus({ preventScroll: true });
+  });
+  dialog.addEventListener("pointerdown", (event) => {
+    if (event.target === dialog) closeDialog();
+  });
+}
+
 function setupActiveNavigation() {
-  const links = [...document.querySelectorAll(".section-nav a")];
+  const links = [...document.querySelectorAll(".site-nav a[href^='#']")];
   const sections = links.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
   if (!links.length || !sections.length) return;
 
@@ -136,37 +101,9 @@ function setupActiveNavigation() {
         else link.removeAttribute("aria-current");
       });
     });
-  }, { rootMargin: "-20% 0px -68%", threshold: 0 });
+  }, { rootMargin: "-18% 0px -70%", threshold: 0 });
 
   sections.forEach((section) => observer.observe(section));
-}
-
-function setupPointerFields() {
-  document.querySelectorAll(".pointer-field").forEach((field) => {
-    field.addEventListener("pointermove", (event) => {
-      const rect = field.getBoundingClientRect();
-      field.style.setProperty("--field-x", `${event.clientX - rect.left}px`);
-      field.style.setProperty("--field-y", `${event.clientY - rect.top}px`);
-    });
-  });
-}
-
-function setupMagneticControls() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  document.querySelectorAll(".magnetic").forEach((control) => {
-    control.addEventListener("pointermove", (event) => {
-      const rect = control.getBoundingClientRect();
-      const x = (event.clientX - rect.left - rect.width / 2) * 0.12;
-      const y = (event.clientY - rect.top - rect.height / 2) * 0.18;
-      control.style.setProperty("--mag-x", `${x}px`);
-      control.style.setProperty("--mag-y", `${y}px`);
-    });
-    control.addEventListener("pointerleave", () => {
-      control.style.setProperty("--mag-x", "0px");
-      control.style.setProperty("--mag-y", "0px");
-    });
-  });
 }
 
 function setupPhotonGame() {
@@ -177,6 +114,7 @@ function setupPhotonGame() {
   const comboNode = document.querySelector("#game-combo");
   const timeNode = document.querySelector("#game-time");
   const message = document.querySelector("#game-message");
+  const floatingStatus = document.querySelector("#status-button");
   if (!field || !target || !startButton || !scoreNode || !comboNode || !timeNode || !message) return;
 
   const duration = 20000;
@@ -211,9 +149,9 @@ function setupPhotonGame() {
     running = false;
     window.clearInterval(clock);
     target.hidden = true;
-    field.classList.remove("is-running");
     startButton.disabled = false;
     startButton.textContent = "再玩一次";
+    floatingStatus?.classList.remove("is-game-hidden");
 
     const isRecord = score > highScore;
     if (isRecord) {
@@ -221,7 +159,7 @@ function setupPhotonGame() {
       try {
         localStorage.setItem("photon-high-score", String(highScore));
       } catch (error) {
-        // The game still works when private browsing blocks storage.
+        // Storage can be unavailable in private browsing; gameplay still works.
       }
     }
     message.textContent = isRecord ? `校准完成：${score} 分，新纪录。` : `校准完成：${score} 分，当前最高 ${highScore} 分。`;
@@ -236,8 +174,8 @@ function setupPhotonGame() {
     timeNode.textContent = "20.0";
     startButton.disabled = true;
     startButton.textContent = "校准中";
+    floatingStatus?.classList.add("is-game-hidden");
     target.hidden = false;
-    field.classList.add("is-running");
     message.textContent = highScore ? `本机最高 ${highScore} 分。保持连击。` : "光子已进入观测场。";
     placePhoton();
     target.focus({ preventScroll: true });
@@ -274,17 +212,16 @@ function setupPhotonGame() {
   startButton.addEventListener("click", startGame);
 }
 
-function setTip() {
+function setPageDetails() {
   const tip = document.querySelector("#daily-tip");
-  if (tip) tip.textContent = `灵感便签：${tips[Math.floor(Math.random() * tips.length)]}`;
+  const year = document.querySelector("#year");
+  if (tip) tip.textContent = tips[Math.floor(Math.random() * tips.length)];
+  if (year) year.textContent = String(new Date().getFullYear());
 }
 
-setupSkills();
+setupHeaderAndParallax();
+setupPhotoReveal();
 setupStatusDialog();
-setupHeroMotion();
-setupScrollReveal();
 setupActiveNavigation();
-setupPointerFields();
-setupMagneticControls();
 setupPhotonGame();
-setTip();
+setPageDetails();
