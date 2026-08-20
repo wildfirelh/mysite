@@ -1,10 +1,17 @@
-const tips = [
-  "灵感便签：试着在同一个地点停留十分钟，让光线决定下一张照片。",
-  "灵感便签：先寻找画面里的明暗关系，再决定主体放在哪里。",
-  "灵感便签：阴天不是没有光，而是光变得更柔软了。",
-  "灵感便签：拍完别急着离开，回头往往会遇到第二个画面。",
-  "灵感便签：整理照片时，连续三张能够讲清楚的故事，比十张相似照片更有力量。"
-];
+const quoteSources = {
+  tangshi: {
+    label: "唐诗",
+    loading: "正在抽取一首唐诗…",
+    ready: "已换成一首随机唐诗。",
+    url: "https://img.moehu.org/txt/?id=tangshi"
+  },
+  dm: {
+    label: "动漫台词",
+    loading: "正在抽取一句动漫台词…",
+    ready: "已换成一句随机动漫台词。",
+    url: "https://img.moehu.org/txt/?id=dm"
+  }
+};
 
 function setupHeaderAndParallax() {
   const header = document.querySelector(".site-header");
@@ -32,22 +39,6 @@ function setupHeaderAndParallax() {
     requestAnimationFrame(render);
   }, { passive: true });
   render();
-}
-
-function setupPhotoReveal() {
-  const targets = document.querySelectorAll("[data-reveal-photo]");
-  if (!targets.length || window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 640px)").matches) return;
-
-  document.documentElement.classList.add("motion-ready");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add("is-visible");
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.08, rootMargin: "0px 0px -6%" });
-
-  targets.forEach((target) => observer.observe(target));
 }
 
 function setupStatusDialog() {
@@ -85,6 +76,45 @@ function setupStatusDialog() {
   dialog.addEventListener("pointerdown", (event) => {
     if (event.target === dialog) closeDialog();
   });
+}
+
+function setupQuotePanel() {
+  const frame = document.querySelector("#quote-frame");
+  const shell = document.querySelector("#quote-frame-shell");
+  const status = document.querySelector("#quote-status");
+  const sourceLink = document.querySelector("#quote-source");
+  const refreshButton = document.querySelector("#quote-refresh");
+  const kindButtons = [...document.querySelectorAll(".quote-kind")];
+  if (!frame || !shell || !status || !sourceLink || !refreshButton || !kindButtons.length) return;
+
+  let currentKind = Math.random() < 0.5 ? "tangshi" : "dm";
+  let requestNumber = 0;
+
+  const showQuote = (kind) => {
+    const source = quoteSources[kind];
+    if (!source) return;
+    currentKind = kind;
+    requestNumber += 1;
+
+    kindButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.quoteKind === kind)));
+    shell.classList.add("is-loading");
+    shell.setAttribute("aria-busy", "true");
+    status.textContent = source.loading;
+    frame.title = `随机${source.label}`;
+    sourceLink.href = source.url;
+    frame.src = `${source.url}&_=${Date.now()}-${requestNumber}`;
+  };
+
+  frame.addEventListener("load", () => {
+    const source = quoteSources[currentKind];
+    shell.classList.remove("is-loading");
+    shell.setAttribute("aria-busy", "false");
+    status.textContent = source.ready;
+  });
+
+  kindButtons.forEach((button) => button.addEventListener("click", () => showQuote(button.dataset.quoteKind)));
+  refreshButton.addEventListener("click", () => showQuote(currentKind));
+  showQuote(currentKind);
 }
 
 function setupActiveNavigation() {
@@ -213,15 +243,13 @@ function setupPhotonGame() {
 }
 
 function setPageDetails() {
-  const tip = document.querySelector("#daily-tip");
   const year = document.querySelector("#year");
-  if (tip) tip.textContent = tips[Math.floor(Math.random() * tips.length)];
   if (year) year.textContent = String(new Date().getFullYear());
 }
 
 setupHeaderAndParallax();
-setupPhotoReveal();
 setupStatusDialog();
+setupQuotePanel();
 setupActiveNavigation();
 setupPhotonGame();
 setPageDetails();

@@ -148,12 +148,7 @@
       {
         "name": "ease-expressive",
         "value": "cubic-bezier(.16, 1, .3, 1)",
-        "purpose": "Photo reveals, target movement, and dialog entrance."
-      },
-      {
-        "name": "photo-reveal",
-        "value": "1.1s cubic-bezier(.16, 1, .3, 1)",
-        "purpose": "One-time clip and rise on journal photographs above 640px."
+        "purpose": "Target movement and dialog entrance."
       },
       {
         "name": "scroll-cue",
@@ -226,9 +221,9 @@
       "name": "Playlist Dialog",
       "kind": "custom",
       "refersTo": "playlist-dialog",
-      "description": "Square near-black optical chamber for the embedded playlist and daily photo prompt.",
-      "html": "<section class=\"ds-dialog\" role=\"dialog\" aria-labelledby=\"ds-dialog-title\"><button class=\"ds-dialog-close\" type=\"button\">关闭</button><p class=\"ds-dialog-label\">NOW PLAYING</p><h2 id=\"ds-dialog-title\">今日歌单</h2><p>拍照、整理和写代码时，会循环播放的声音。</p><a href=\"#\">在网易云音乐打开</a></section>",
-      "css": ".ds-dialog { position:relative; width:min(100%,470px); padding:clamp(1.5rem,5vw,2.5rem); color:var(--light, #f5f4ee); background:var(--dark, #0b0c0d); box-shadow:0 2rem 6rem rgba(0,0,0,.4); font-family:Aptos, 'Segoe UI', 'PingFang SC', sans-serif; } .ds-dialog-close { position:absolute; top:1.2rem; right:1.2rem; display:grid; min-width:2.75rem; min-height:2.75rem; place-items:center; border:0; border-bottom:1px solid #747771; color:#b7b9b3; background:transparent; cursor:pointer; } .ds-dialog-label { margin:0 0 2.5rem; color:var(--acid, #d8ff38); font-size:.58rem; font-weight:820; letter-spacing:.15em; } .ds-dialog h2 { margin:0; font:600 2.15rem/1.2 'Portfolio Serif', serif; } .ds-dialog p:not(.ds-dialog-label) { max-width:25rem; color:#b7b9b3; font-size:.86rem; line-height:1.8; } .ds-dialog a { color:var(--acid, #d8ff38); font-size:.76rem; text-underline-offset:.26em; } .ds-dialog-close:hover, .ds-dialog-close:focus-visible, .ds-dialog a:hover, .ds-dialog a:focus-visible { color:var(--acid, #d8ff38); outline:3px solid #3566ff; outline-offset:3px; }"
+      "description": "Square near-black optical chamber for the embedded playlist plus sandboxed random Tang-poem and anime-quote sources.",
+      "html": "<section class=\"ds-dialog\" role=\"dialog\" aria-labelledby=\"ds-dialog-title\"><button class=\"ds-dialog-close\" type=\"button\">关闭</button><p class=\"ds-dialog-label\">NOW PLAYING</p><h2 id=\"ds-dialog-title\">今日歌单</h2><p>拍照、整理和写代码时，会循环播放的声音。</p><div class=\"ds-quote\"><h3>随机文字</h3><button type=\"button\">唐诗</button><button type=\"button\">动漫台词</button><iframe title=\"随机唐诗\"></iframe><button type=\"button\">再来一条</button></div></section>",
+      "css": ".ds-dialog { position:relative; width:min(100%,470px); padding:clamp(1.5rem,5vw,2.5rem); color:var(--light, #f5f4ee); background:var(--dark, #0b0c0d); box-shadow:0 2rem 6rem rgba(0,0,0,.4); font-family:Aptos, 'Segoe UI', 'PingFang SC', sans-serif; } .ds-dialog-close { position:absolute; top:1.2rem; right:1.2rem; display:grid; min-width:2.75rem; min-height:2.75rem; place-items:center; border:0; border-bottom:1px solid #747771; color:#b7b9b3; background:transparent; cursor:pointer; } .ds-dialog-label { margin:0 0 2.5rem; color:var(--acid, #d8ff38); font-size:.58rem; font-weight:820; letter-spacing:.15em; } .ds-dialog h2 { margin:0; font:600 2.15rem/1.2 'Portfolio Serif', serif; } .ds-quote { margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid #343638; } .ds-quote h3 { font:600 1.05rem/1.4 'Portfolio Serif', serif; } .ds-quote button { min-height:2.75rem; border:1px solid #666962; color:var(--light, #f5f4ee); background:transparent; } .ds-quote button[aria-pressed='true'] { color:var(--dark, #0b0c0d); background:var(--acid, #d8ff38); } .ds-quote iframe { width:100%; height:9.5rem; border:0; background:#fff; filter:invert(1) hue-rotate(180deg); }"
     },
     {
       "name": "Photo Tile",
@@ -236,7 +231,7 @@
       "refersTo": "photo-tile",
       "description": "Square-edged editorial crop with a restrained caption and no generic overlay chrome.",
       "html": "<figure class=\"ds-photo\"><div role=\"img\" aria-label=\"摄影作品占位预览\"></div><figcaption>光穿过叶片</figcaption></figure>",
-      "css": ".ds-photo { width:min(100%,28rem); margin:0; color:var(--ink-soft, #393833); font-family:Aptos, 'Segoe UI', 'PingFang SC', sans-serif; } .ds-photo div { width:100%; aspect-ratio:4 / 5; background:#d3d0c6; box-shadow:none; transition:clip-path 1.1s cubic-bezier(.16,1,.3,1), transform 1.1s cubic-bezier(.16,1,.3,1); } .ds-photo figcaption { margin-top:.65rem; font-size:.66rem; line-height:1.55; } .ds-photo:focus-within div { outline:3px solid #3566ff; outline-offset:4px; } @media (prefers-reduced-motion:reduce) { .ds-photo div { transition-duration:.01ms; } }"
+      "css": ".ds-photo { width:min(100%,28rem); margin:0; color:var(--ink-soft, #393833); font-family:Aptos, 'Segoe UI', 'PingFang SC', sans-serif; } .ds-photo div { width:100%; aspect-ratio:4 / 5; background:#d3d0c6; box-shadow:none; } .ds-photo figcaption { margin-top:.65rem; font-size:.66rem; line-height:1.55; } .ds-photo:focus-within div { outline:3px solid #3566ff; outline-offset:4px; }"
     },
     {
       "name": "Photon Target",
@@ -298,7 +293,7 @@
       "**Do** lead with photographs and exhibition-scale type; explanatory copy supports the sequence rather than introducing the author first.",
       "**Do** preserve the paper/ink base, rare Optical Acid signal, and seasonal mats tied to specific journals.",
       "**Do** keep photo replacements truthful, dimensioned, meaningfully described, and cropped to the role they occupy.",
-      "**Do** test the 900px and 640px recompositions, 320px minimum width, keyboard navigation, dialog focus return, game keyboard input, and reduced-motion mode after visual changes.",
+      "**Do** test the 900px and 640px recompositions, 320px minimum width, keyboard navigation, dialog focus return, random-text source switching and refresh, game keyboard input, and reduced-motion mode after visual changes.",
       "**Do** update both `DESIGN.md` and `.impeccable/design.json` when durable tokens, components, breakpoints, motion, or visual rules change."
     ],
     "donts": [

@@ -150,7 +150,23 @@
       <iframe class="music-player" title="网易云音乐歌单，可在播放器内切换上一首或下一首" src="https://music.163.com/outchain/player?type=0&id=2993413230&auto=0&height=66"></iframe>
       <p class="music-note">播放器支持上一首、播放和下一首。若没有加载，可打开完整歌单。</p>
       <a class="playlist-link" href="https://music.163.com/playlist?id=2993413230" target="_blank" rel="noreferrer">在网易云音乐打开</a>
-      <p class="tip" id="daily-tip">加载中…</p>
+      <section class="quote-panel" aria-labelledby="quote-title">
+        <div class="quote-heading">
+          <h3 id="quote-title">随机文字</h3>
+          <div class="quote-kinds" role="group" aria-label="选择随机文字类型">
+            <button class="quote-kind" type="button" data-quote-kind="tangshi" aria-pressed="true">唐诗</button>
+            <button class="quote-kind" type="button" data-quote-kind="dm" aria-pressed="false">动漫台词</button>
+          </div>
+        </div>
+        <div class="quote-frame-shell is-loading" id="quote-frame-shell">
+          <iframe class="quote-frame" id="quote-frame" title="随机唐诗" src="https://img.moehu.org/txt/?id=tangshi" sandbox="" referrerpolicy="no-referrer"></iframe>
+        </div>
+        <div class="quote-actions">
+          <p id="quote-status" aria-live="polite">正在抽取一首唐诗…</p>
+          <button id="quote-refresh" type="button">再来一条</button>
+        </div>
+        <a class="quote-source" id="quote-source" href="https://img.moehu.org/txt/?id=tangshi" target="_blank" rel="noreferrer">文字没有显示？直接打开接口</a>
+      </section>
     </div>
   </dialog>
 

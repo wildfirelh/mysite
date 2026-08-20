@@ -206,10 +206,6 @@ a { text-underline-offset: 0.26em; }
 .city-strip { margin: clamp(5rem, 10vw, 10rem) calc(var(--page-pad) * -1) 0; }
 .city-strip img { aspect-ratio: 3.4 / 1; }
 
-.photo-tile[data-reveal-photo], .panorama[data-reveal-photo], .city-strip[data-reveal-photo] { clip-path: inset(0); }
-.motion-ready .photo-tile[data-reveal-photo], .motion-ready .panorama[data-reveal-photo], .motion-ready .city-strip[data-reveal-photo] { clip-path: inset(0 0 100% 0); transform: translateY(2rem); transition: clip-path 1.1s cubic-bezier(.16,1,.3,1), transform 1.1s cubic-bezier(.16,1,.3,1); }
-.motion-ready [data-reveal-photo].is-visible { clip-path: inset(0); transform: translateY(0); }
-
 .projects-section { padding: clamp(6rem, 13vw, 12rem) var(--page-pad); color: var(--light); background: var(--dark); }
 .projects-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; padding-bottom: clamp(3rem, 7vw, 6rem); }
 .projects-heading h2, .photon-heading h2, .resources-section h2 { margin: 0; font-family: "Archivo Display", sans-serif; font-size: clamp(4rem, 12vw, 11rem); font-weight: 900; letter-spacing: -0.045em; line-height: 0.78; }
@@ -285,7 +281,24 @@ a { text-underline-offset: 0.26em; }
 .music-note { margin: 0.6rem 0 0; color: #979a94; font-size: 0.72rem; line-height: 1.65; }
 .playlist-link { display: inline-block; margin-top: 0.9rem; padding-bottom: 0.2rem; border-bottom: 1px solid #797c75; color: var(--acid); font-size: 0.76rem; text-decoration: none; }
 .playlist-link:hover, .playlist-link:focus-visible { border-color: var(--light); color: var(--light); outline: none; }
-.tip { margin: 1.4rem 0 0; padding-top: 1rem; border-top: 1px solid #343638; color: #b7b9b3; font-size: 0.77rem; line-height: 1.75; }
+.quote-panel { margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid #343638; }
+.quote-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.quote-heading h3 { margin: 0; font-family: "Portfolio Serif", serif; font-size: 1.05rem; font-weight: 600; }
+.quote-kinds { display: flex; border: 1px solid #555852; }
+.quote-kind { min-height: 2.75rem; padding: 0.5rem 0.72rem; border: 0; color: #b7b9b3; background: transparent; cursor: pointer; font-size: 0.7rem; font-weight: 760; transition: color 180ms ease, background 180ms ease; }
+.quote-kind + .quote-kind { border-left: 1px solid #555852; }
+.quote-kind:hover, .quote-kind:focus-visible { color: var(--light); outline: none; }
+.quote-kind[aria-pressed="true"] { color: var(--dark); background: var(--acid); }
+.quote-frame-shell { position: relative; min-height: 9.5rem; margin-top: 0.9rem; overflow: hidden; background: #0c0d0e; }
+.quote-frame-shell::after { position: absolute; inset: 0; display: grid; color: #969993; background: #0c0d0e; content: "正在抽取文字…"; font-size: 0.72rem; place-items: center; pointer-events: none; opacity: 0; transition: opacity 180ms ease; }
+.quote-frame-shell.is-loading::after { opacity: 1; }
+.quote-frame { display: block; width: 100%; height: 9.5rem; border: 0; background: #fff; filter: invert(1) hue-rotate(180deg); }
+.quote-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.7rem; }
+.quote-actions p { margin: 0; color: #979a94; font-size: 0.7rem; line-height: 1.55; }
+.quote-actions button { flex: 0 0 auto; min-height: 2.75rem; padding: 0.5rem 0.8rem; border: 1px solid #666962; color: var(--light); background: transparent; cursor: pointer; font-size: 0.7rem; font-weight: 760; transition: color 180ms ease, border-color 180ms ease, background 180ms ease; }
+.quote-actions button:hover, .quote-actions button:focus-visible { border-color: var(--acid); color: var(--dark); background: var(--acid); outline: none; }
+.quote-source { display: inline-block; margin-top: 0.3rem; color: #8d908a; font-size: 0.66rem; text-decoration: underline; text-decoration-color: #555852; }
+.quote-source:hover, .quote-source:focus-visible { color: var(--light); outline: none; }
 
 @keyframes cue-travel { 0% { transform: translateX(-110%); } 55%, 100% { transform: translateX(110%); } }
 @keyframes status-pulse { 50% { opacity: 0.45; transform: scale(0.72); } }
@@ -366,5 +379,4 @@ a { text-underline-offset: 0.26em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
   .hero-photo { transform: rotate(var(--rotation)); }
-  .motion-ready [data-reveal-photo] { clip-path: inset(0); transform: none; }
 }

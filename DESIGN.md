@@ -98,6 +98,11 @@ components:
     textColor: "{colors.chamber-light}"
     rounded: "{rounded.square}"
     padding: "clamp(1.5rem, 5vw, 2.5rem)"
+  random-text-panel:
+    backgroundColor: "{colors.chamber-dark}"
+    textColor: "{colors.chamber-light}"
+    activeColor: "{colors.optical-acid}"
+    rounded: "{rounded.square}"
   photo-tile:
     backgroundColor: "#d3d0c6"
     rounded: "{rounded.square}"
@@ -231,12 +236,12 @@ Borders are structural and thin. Full-black rules divide major paper sections; t
 
 - **Project Rows:** These are ruled editorial rows, not cards. On hover they move slightly right and invert to acid, with all secondary text becoming dark.
 - **Resource Links:** Two-column ruled rows on desktop and label/description rows on mobile. Hover/focus invert to ink and shift right slightly.
-- **Playlist Dialog:** A square near-black floating chamber anchored above the status pill on desktop and inset from both phone edges on mobile. It uses the native dialog backdrop, restores focus to its opener, and prevents page scrolling while open.
+- **Playlist Dialog:** A square near-black floating chamber anchored above the status pill on desktop and inset from both phone edges on mobile. It uses the native dialog backdrop, restores focus to its opener, and prevents page scrolling while open. Its random-text panel embeds the two supplied text endpoints in a sandboxed frame because those endpoints do not expose CORS headers; segmented controls switch between 唐诗 and 动漫台词, and “再来一条” reloads the active source with a cache buster.
 
 ### Photo Tiles
 
 - **Style:** Square-edged image frames with editorial crops, small soft-ink captions, and no generic overlays or badges.
-- **Motion:** Desktop and tablet journal images reveal once with a bottom-to-top clip and 2rem rise over 1.1 seconds using the expressive ease. Phones render images immediately to prioritize stability and scanning.
+- **Motion:** Journal photographs render immediately at every breakpoint. Do not gate real work behind intersection observers, opacity, or clip paths; motion is reserved for the hero, dialog, navigation, and playable light interactions.
 - **Replacement:** Match the existing orientation and narrative role before changing a source. Do not fabricate locations, dates, or captions.
 
 ### Photon Field
@@ -247,7 +252,7 @@ Borders are structural and thin. Full-black rules divide major paper sections; t
 
 ### Motion & Reduced Motion
 
-State transitions generally run 180–220ms. Reveals and modal entrance use `cubic-bezier(.16, 1, .3, 1)`; the scroll cue uses a slower 2.2-second travel; the status dot uses a 2-second pulse. Scroll parallax is capped and applied only in the hero. Under `prefers-reduced-motion: reduce`, smooth scrolling, transitions, repeated animations, parallax, and clipped reveals are effectively removed while content remains fully visible.
+State transitions generally run 180–220ms. Modal entrance and photon movement use `cubic-bezier(.16, 1, .3, 1)`; the scroll cue uses a slower 2.2-second travel; the status dot uses a 2-second pulse. Scroll parallax is capped and applied only in the hero. Under `prefers-reduced-motion: reduce`, smooth scrolling, transitions, repeated animations, and parallax are effectively removed while content remains fully visible.
 
 ## Do's and Don'ts
 
@@ -256,7 +261,7 @@ State transitions generally run 180–220ms. Reveals and modal entrance use `cub
 - **Do** lead with photographs and exhibition-scale type; explanatory copy supports the sequence rather than introducing the author first.
 - **Do** preserve the paper/ink base, rare Optical Acid signal, and seasonal mats tied to specific journals.
 - **Do** keep photo replacements truthful, dimensioned, meaningfully described, and cropped to the role they occupy.
-- **Do** test the 900px and 640px recompositions, 320px minimum width, keyboard navigation, dialog focus return, game keyboard input, and reduced-motion mode after visual changes.
+- **Do** test the 900px and 640px recompositions, 320px minimum width, keyboard navigation, dialog focus return, random-text source switching and refresh, game keyboard input, and reduced-motion mode after visual changes.
 - **Do** update both `DESIGN.md` and `.impeccable/design.json` when durable tokens, components, breakpoints, motion, or visual rules change.
 
 ### Don't:
